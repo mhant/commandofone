@@ -14,7 +14,7 @@ class GameBoard {
     start() {
         this.canvas = document.getElementById("gboard");
         this.canvas.width = 480;
-        this.canvas.height = 270;
+        this.canvas.height = 480;
         this.context = this.canvas.getContext("2d");
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
@@ -41,8 +41,11 @@ class GamePiece {
 }
 
 function accelerate(direction) {
-    if (direction === 0.05) {
-        pieces.push(new GamePiece(10, 10, "red", 0, 0));
+    if (direction === 1) {
+        pieces.push(new Ship(0, 0, ShipType.CRUSER));
+    }
+    if (direction === 2) {
+        pieces.push(new Ship(0, 100, ShipType.CORVETTE));
     }
 }
 
@@ -53,7 +56,7 @@ function updateGameArea() {
     gBoard.frameNo += 1;
     for (i = 0; i < pieces.length; i += 1) {
         pieces[i].x += 1;
-        pieces[i].draw();
+        pieces[i].draw(gBoard.context);
     }
 }
 

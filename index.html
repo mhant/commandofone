@@ -4,19 +4,17 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel=¨stylesheet¨ type=¨text/css¨ href=¨main.css¨>
-    <style>
-        canvas {
-            border: 1px solid #d3d3d3;
-            background-color: #f1f1f1;
-        }
-    </style>
     <script src="main.js"></script>
+    <!-- include objects -->
+    <script src="objects/drawableObject.js"></script>
+    <script src="objects/ship.js"></script>
 </head>
 
 <body onload="startGame()">
     <canvas id="gboard"></canvas>
     <br>
-    <button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">Create</button>
+    <button onclick="accelerate(1)">cruser</button>
+    <button onclick="accelerate(2)">corvet</button>
 </body>
 
 </html>
