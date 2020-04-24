@@ -19,7 +19,7 @@ class GameBoard {
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
     }
-    clear(){
+    clear() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
@@ -33,20 +33,15 @@ class GamePiece {
         this.x = x;
         this.y = y;
     }
-    draw(){
+    draw() {
         let ctx = gBoard.context;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
 
-function accelerate(direction) {
-    if (direction === 1) {
-        pieces.push(new Ship(0, 0, ShipType.CRUSER));
-    }
-    if (direction === 2) {
-        pieces.push(new Ship(0, 100, ShipType.CORVETTE));
-    }
+function createShip(shipType, direction) {
+    pieces.push(new Ship(0, shipType === ShipType.CRUSER ? 100 : 200, shipType, direction));
 }
 
 

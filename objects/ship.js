@@ -1,3 +1,8 @@
+// Ship draw constants for 10, 13, 13 triangle 
+// with angles 45.24°, 67.38°, 67.38°
+const TIP_ANGLE = 45.24;
+const SHIP_SIDE = 13;
+
 class ShipType {
     static CRUSER = "cruser";
     static CORVETTE = "corvette";
@@ -8,10 +13,12 @@ class Ship extends drawableObject {
     #direction
     #size
     #color
-    constructor(x, y, type = ShipType.CRUSER) {
+
+    static #SHIP_
+    constructor(x, y, type = ShipType.CRUSER, direction = 0) {
         super(x, y);
         this.type = type;
-        this.direction = 0;
+        this.direction = direction;
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
@@ -24,19 +31,25 @@ class Ship extends drawableObject {
         }
 
     }
-    draw(context) {
-        // X & Y left wing tip of ship
-        //TODO implement direction, right now all is 90
-        context.fillStyle = this.color;
-        // Draw left wing
-        context.fillRect(this.x, this.y, this.size, this.size);
-        // Draw center
-        context.fillRect(this.x+this.size, this.y, this.size, (this.size*2));
-        context.fillRect(this.x+(this.size*2), this.y, this.size, (this.size*3));
-        context.fillRect(this.x+(this.size*3), this.y, this.size, (this.size*2));
-        // Draw right wing
-        context.fillRect(this.x+(this.size*4), this.y, this.size, this.size);
-
+    draw(ctx) {
+        // X & Y is tip of ship and direction is angle of base-middle
+        let leftAngle = this.direction - (TIP_ANGLE / 2);
+        let rightAngle = leftAngle + TIP_ANGLE;
+        let multiplyer = SHIP_SIDE * this.size;
+        let leftX = this.x + (multiplyer * Math.cos((leftAngle * Math.PI) / 180));
+        let leftY = this.y + (multiplyer * Math.sin((leftAngle * Math.PI) / 180));
+        let rightX = this.x + (multiplyer * Math.cos((rightAngle * Math.PI) / 180));
+        let rightY = this.y + (multiplyer * Math.sin((rightAngle * Math.PI) / 180));
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(leftX, leftY);
+        ctx.lineTo(rightX, rightY);
+        ctx.fill();
+        ctx.fillStyle = "#00FF00";
+        ctx.fillRect(this.x, this.y, 5, 5);
+        ctx.fillRect(this.x, this.y, 5, 5);
+        ctx.fillRect(this.x, this.y, 5, 5);
     }
     update() {
 

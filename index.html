@@ -13,8 +13,9 @@
 <body onload="startGame()">
     <canvas id="gboard"></canvas>
     <br>
-    <button onclick="accelerate(1)">cruser</button>
-    <button onclick="accelerate(2)">corvet</button>
+    <input id="direction" type="text"></input>
+    <button onclick="createShip(ShipType.CRUSER, document.getElementById('direction').value)">cruser</button>
+    <button onclick="createShip(ShipType.CORVETTE, document.getElementById('direction').value)">corvette</button>
 </body>
 
 </html>
