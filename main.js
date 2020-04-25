@@ -11,6 +11,8 @@ class GameBoard {
     #canvas
     #frameNo
     #interval
+    leftAdjust
+    topAdjust
     start() {
         this.canvas = document.getElementById("gboard");
         this.canvas.width = 480;
@@ -18,6 +20,9 @@ class GameBoard {
         this.context = this.canvas.getContext("2d");
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
+        this.canvas.addEventListener('click', clickHandler);
+        this.leftAdjust = this.canvas.offsetLeft + this.canvas.clientLeft;
+        this.topAdjust = this.canvas.offsetTop + this.canvas.clientTop;
     }
     clear() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -40,17 +45,29 @@ class GamePiece {
     }
 }
 
-function createShip(shipType, direction) {
-    pieces.push(new Ship(0, shipType === ShipType.CRUSER ? 100 : 200, shipType, direction));
+function createShip(shipType) {
+    pieces.push(new Ship(100, shipType === ShipType.CRUSER ? 100 : 200, shipType, 0));
 }
 
+function engage(x, y) {
+    if (pieces.length > 0) {
+        pieces[0].navigateTo(x, y);
+    }
+}
+
+function clickHandler(event) {
+    if (pieces.length > 0) {
+        pieces[0].navigateTo(event.x - gBoard.leftAdjust, event.y - gBoard.topAdjust);
+    }
+}
 
 function updateGameArea() {
     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     gBoard.clear();
     gBoard.frameNo += 1;
-    for (i = 0; i < pieces.length; i += 1) {
-        pieces[i].x += 1;
+    for (i = 0; i < pieces.length; i++) {
+        // pieces[i].x += 1;
+        pieces[i].update();
         pieces[i].draw(gBoard.context);
     }
 }

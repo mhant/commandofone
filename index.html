@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel=¨stylesheet¨ type=¨text/css¨ href=¨main.css¨>
+    <link rel="stylesheet" type="text/css" href="main.css">
     <script src="main.js"></script>
     <!-- include objects -->
     <script src="objects/drawableObject.js"></script>
@@ -12,10 +12,9 @@
 
 <body onload="startGame()">
     <canvas id="gboard"></canvas>
-    <br>
-    <input id="direction" type="text"></input>
-    <button onclick="createShip(ShipType.CRUSER, document.getElementById('direction').value)">cruser</button>
-    <button onclick="createShip(ShipType.CORVETTE, document.getElementById('direction').value)">corvette</button>
+    <br />
+    <button onclick="createShip(ShipType.CRUSER)">Create Cruser</button>
+    <button onclick="createShip(ShipType.CORVETTE)">Create Corvette</button>
 </body>
 
 </html>
