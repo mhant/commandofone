@@ -26,7 +26,7 @@ class Ship extends drawableObject {
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
-                this.color = "#e0e0eb";
+                this.color = "#5c5b5c";
                 this.speed = 5;
                 break;
             case ShipType.CORVETTE:
