@@ -103,8 +103,26 @@ class Ship extends drawableObject {
             this.y = toMoveY;
         }
     }
-    collide() {
-
+    collide(x, y) {
+        x = parseFloat(x);
+        y = parseFloat(y);
+        //TODO move to seperate function to not duplicate
+        let leftAngle = this.direction - (TIP_ANGLE / 2) + Math.PI;
+        let rightAngle = leftAngle + TIP_ANGLE;
+        let multiplyer = SHIP_SIDE * this.size;
+        let leftX = this.x + (multiplyer * Math.cos(leftAngle));
+        let leftY = this.y + (multiplyer * Math.sin(leftAngle));
+        let rightX = this.x + (multiplyer * Math.cos(rightAngle));
+        let rightY = this.y + (multiplyer * Math.sin(rightAngle));
+        //get total area and compare to subareas from collide point and rest of triangle
+        let areaMain = this.getArea(this.x, this.y, leftX, leftY, rightX, rightY);
+        let area1 = this.getArea(x, y, leftX, leftY, rightX, rightY);
+        let area2 = this.getArea(this.x, this.y, x, y, rightX, rightY);
+        let area3 = this.getArea(this.x, this.y, leftX, leftY, x, y);
+        return parseInt(areaMain) === parseInt(area1 + area2 + area3);
+    }
+    getArea(x1, y1, x2, y2, x3, y3){
+        return Math.abs(((x1-x3)*(y2-y1)-(x1-x2)*(y3-y1))/2);
     }
     navigateTo(x, y) {
         x = parseFloat(x);

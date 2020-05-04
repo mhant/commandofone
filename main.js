@@ -51,14 +51,15 @@ function createShip(shipType) {
 
 function engage(x, y) {
     if (pieces.length > 0) {
+        if(pieces[0].collide(x, y)){
+            alert("hit");
+        }
         pieces[0].navigateTo(x, y);
     }
 }
 
 function clickHandler(event) {
-    if (pieces.length > 0) {
-        pieces[0].navigateTo(event.x - gBoard.leftAdjust, event.y - gBoard.topAdjust);
-    }
+    engage(event.x - gBoard.leftAdjust, event.y - gBoard.topAdjust);
 }
 
 function updateGameArea() {
