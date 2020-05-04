@@ -5,6 +5,9 @@ var gBoard;
 function startGame() {
     gBoard = new GameBoard();
     gBoard.start();
+    window.onresize = function(event){
+        gBoard.setSize();
+    }
 }
 
 class GameBoard {
@@ -15,8 +18,7 @@ class GameBoard {
     topAdjust
     start() {
         this.canvas = document.getElementById("gboard");
-        this.canvas.width = 480;
-        this.canvas.height = 480;
+        this.setSize();
         this.context = this.canvas.getContext("2d");
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
@@ -26,6 +28,10 @@ class GameBoard {
     }
     clear() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+    setSize(){
+        this.canvas.width = getWidth()-100;
+        this.canvas.height = getHeight()-200;
     }
 }
 
@@ -51,10 +57,12 @@ function createShip(shipType) {
 
 function engage(x, y) {
     if (pieces.length > 0) {
-        if(pieces[0].collide(x, y)){
+        if (pieces[0].collide(x, y)) {
             alert("hit");
         }
-        pieces[0].navigateTo(x, y);
+        else {
+            pieces[0].navigateTo(x, y);
+        }
     }
 }
 
@@ -77,3 +85,23 @@ function everyinterval(n) {
     if ((myGameArea.frameNo / n) % 1 == 0) { return true; }
     return false;
 }
+
+function getWidth() {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );
+  }
+  
+  function getHeight() {
+    return Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight,
+      document.documentElement.clientHeight
+    );
+  }
