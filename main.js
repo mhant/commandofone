@@ -5,9 +5,17 @@ var gBoard;
 function startGame() {
     gBoard = new GameBoard();
     gBoard.start();
-    window.onresize = function(event){
+    window.onresize = function (event) {
         gBoard.setSize();
     }
+    let range = document.getElementById("sheild");
+    range.addEventListener("input", () => { 
+        setSliderHint(range); 
+        if (pieces.length > 0) {
+            pieces[0].setShields(parseInt(range.value));
+        }
+    });
+    setSliderHint(range);
 }
 
 class GameBoard {
@@ -29,9 +37,9 @@ class GameBoard {
     clear() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-    setSize(){
-        this.canvas.width = getWidth()-100;
-        this.canvas.height = getHeight()-200;
+    setSize() {
+        this.canvas.width = getWidth() - 100;
+        this.canvas.height = getHeight() - 200;
     }
 }
 
@@ -88,20 +96,37 @@ function everyinterval(n) {
 
 function getWidth() {
     return Math.max(
-      document.body.scrollWidth,
-      document.documentElement.scrollWidth,
-      document.body.offsetWidth,
-      document.documentElement.offsetWidth,
-      document.documentElement.clientWidth
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
     );
-  }
-  
-  function getHeight() {
+}
+
+function getHeight() {
     return Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.documentElement.clientHeight
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight
     );
-  }
+}
+
+function setSliderHint(range) {
+    let val = parseInt(range.value);
+    let dyno =document.querySelector('[data="dyno"]');
+    switch (val) {
+        case 1:
+            dyno.innerHTML = ".slider { border-left: 5px solid #00B09D !important; border-right: 5px solid #2F4858 !important;}";
+            break;
+        case 2:
+            dyno.innerHTML = ".slider { border-left: 5px solid #00B09D !important; border-right: 5px solid #00B09D !important;}";
+            break;
+        case 3:
+            dyno.innerHTML = ".slider { border-left: 5px solid #2F4858 !important; border-right: 5px solid #00B09D !important;}";
+            break;
+    }
+
+}

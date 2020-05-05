@@ -8,6 +8,12 @@ class ShipType {
     static CORVETTE = "corvette";
 }
 
+class SheildPosition {
+    static back = 1;
+    static equal = 2;
+    static front = 3;
+}
+
 class Ship extends drawableObject {
     #type
     #direction
@@ -16,6 +22,8 @@ class Ship extends drawableObject {
     #destination
     #origin
     #speed
+    #shieldPosition
+    #shieldStrength
 
     static #SHIP_
     constructor(x, y, type = ShipType.CRUSER, direction = 0) {
@@ -23,16 +31,19 @@ class Ship extends drawableObject {
         this.origin = { 'x': x, 'y': y };
         this.type = type;
         this.direction = direction;
+        this.shieldPosition = SheildPosition.equal;
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
                 this.color = "#5c5b5c";
                 this.speed = 5;
+                this.shieldStrength = 2;
                 break;
             case ShipType.CORVETTE:
                 this.size = 10;
                 this.color = "#ff8080";
                 this.speed = 3;
+                this.shieldStrength = 4;
                 break;
         }
 
@@ -46,6 +57,27 @@ class Ship extends drawableObject {
         let leftY = this.y + (multiplyer * Math.sin(leftAngle));
         let rightX = this.x + (multiplyer * Math.cos(rightAngle));
         let rightY = this.y + (multiplyer * Math.sin(rightAngle));
+        let cpX = this.x - (multiplyer / 2 * Math.cos(this.direction));
+        let cpY = this.y - (multiplyer / 2 * Math.sin(this.direction));
+        //draw sheild
+        ctx.beginPath();
+        ctx.fillStyle = "#00B09D";
+        //start drawing sheild at -90, then adjust according to sheild position
+        let startSheild = this.direction - Math.PI / 2;
+        let endSheild = this.direction - Math.PI / 2;
+        switch (this.shieldPosition) {
+            case SheildPosition.back:
+                startSheild = endSheild + Math.PI;
+                break;
+            case SheildPosition.equal:
+                endSheild = startSheild +  2 * Math.PI;
+                break;
+            case SheildPosition.front:
+                endSheild = startSheild + Math.PI;
+                break
+        }
+        ctx.arc(cpX, cpY, multiplyer, startSheild, endSheild);
+        ctx.fill();
         //draw ship triangle
         ctx.beginPath();
         ctx.fillStyle = this.color;
@@ -56,9 +88,6 @@ class Ship extends drawableObject {
         //draw cockpit
         ctx.beginPath();
         ctx.fillStyle = "#9c22e3";
-        //move cockpit back
-        let cpX = this.x - (multiplyer / 2 * Math.cos(this.direction));
-        let cpY = this.y - (multiplyer / 2 * Math.sin(this.direction));
         ctx.arc(cpX, cpY, multiplyer / 8, 0, 2 * Math.PI);
         ctx.fill();
         //draw dest and plume if dest exists
@@ -74,9 +103,9 @@ class Ship extends drawableObject {
             //tail point
             ctx.beginPath();
             ctx.fillStyle = "#fcba03";
-            let cpX = this.x - (multiplyer * Math.cos(this.direction));
-            let cpY = this.y - (multiplyer * Math.sin(this.direction));
-            ctx.arc(cpX, cpY, multiplyer / 10, 0, 2 * Math.PI);
+            let dpX = this.x - (multiplyer * Math.cos(this.direction));
+            let dpY = this.y - (multiplyer * Math.sin(this.direction));
+            ctx.arc(dpX, dpY, multiplyer / 10, 0, 2 * Math.PI);
             ctx.fill();
         }
     }
@@ -121,8 +150,8 @@ class Ship extends drawableObject {
         let area3 = this.getArea(this.x, this.y, leftX, leftY, x, y);
         return parseInt(areaMain) === parseInt(area1 + area2 + area3);
     }
-    getArea(x1, y1, x2, y2, x3, y3){
-        return Math.abs(((x1-x3)*(y2-y1)-(x1-x2)*(y3-y1))/2);
+    getArea(x1, y1, x2, y2, x3, y3) {
+        return Math.abs(((x1 - x3) * (y2 - y1) - (x1 - x2) * (y3 - y1)) / 2);
     }
     navigateTo(x, y) {
         x = parseFloat(x);
@@ -133,5 +162,9 @@ class Ship extends drawableObject {
         }
         this.destination = { 'x': x, 'y': y };
         this.direction = Math.atan2(y - this.y, x - this.x);
+    }
+
+    setShields(position) {
+        this.shieldPosition = position;
     }
 }

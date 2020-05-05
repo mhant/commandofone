@@ -4,6 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="main.css">
+    <!-- Userd for dynamically setting style elimaents -->
     <script src="main.js"></script>
     <!-- include objects -->
     <script src="objects/drawableObject.js"></script>
@@ -11,10 +12,13 @@
 </head>
 
 <body onload="startGame()">
+    <style data="dyno" type="text/css"></style>
+    <input type="range" class="slider" min="1" max="3" value="2" id="sheild">
     <canvas id="gboard"></canvas>
     <br />
     <button onclick="createShip(ShipType.CRUSER)">Create Cruser</button>
     <button onclick="createShip(ShipType.CORVETTE)">Create Corvette</button>
+
 </body>
 
 </html>

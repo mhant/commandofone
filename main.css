@@ -1,4 +1,52 @@
+/* Color scheme: https://mycolor.space/?hex=%2339F057&sub=1 */
+
 canvas {
-    border:10px solid #222255;
-    background-color: #efd7f7;
+    border: 10px solid #164975;
+    background-color: #DBF9D8;
 }
+
+/* Shield slider 
+* Some notes taken from: https://www.w3schools.com/howto/howto_js_rangeslider.asp
+*/
+
+.slider {
+    -webkit-appearance: none;
+    width: 130px;
+    height: 30px;
+    background: #2F4858;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 40px;
+    margin-left: 20px;
+    position: fixed;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 25px;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #39F057;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+
+/* end of shield slider */
