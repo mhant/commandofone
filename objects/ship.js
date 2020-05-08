@@ -25,7 +25,6 @@ class Ship extends drawableObject {
     #shieldPosition
     #shieldStrength
 
-    static #SHIP_
     constructor(x, y, type = ShipType.CRUSER, direction = 0) {
         super(x, y);
         this.origin = { 'x': x, 'y': y };
@@ -48,36 +47,41 @@ class Ship extends drawableObject {
         }
 
     }
+
     draw(ctx) {
         // X & Y is tip of ship and direction is angle of base-middle
-        let leftAngle = this.direction - (TIP_ANGLE / 2) + Math.PI;
-        let rightAngle = leftAngle + TIP_ANGLE;
         let multiplyer = SHIP_SIDE * this.size;
-        let leftX = this.x + (multiplyer * Math.cos(leftAngle));
-        let leftY = this.y + (multiplyer * Math.sin(leftAngle));
-        let rightX = this.x + (multiplyer * Math.cos(rightAngle));
-        let rightY = this.y + (multiplyer * Math.sin(rightAngle));
+        let leftRightXY = this.getLeftRightXY();
+        let leftX = leftRightXY["left"]["x"];
+        let leftY = leftRightXY["left"]["y"];
+        let rightX = leftRightXY["right"]["x"];
+        let rightY = leftRightXY["right"]["y"];
         let cpX = this.x - (multiplyer / 2 * Math.cos(this.direction));
         let cpY = this.y - (multiplyer / 2 * Math.sin(this.direction));
         //draw sheild
-        ctx.beginPath();
-        ctx.fillStyle = "#00B09D";
-        //start drawing sheild at -90, then adjust according to sheild position
-        let startSheild = this.direction - Math.PI / 2;
-        let endSheild = this.direction - Math.PI / 2;
-        switch (this.shieldPosition) {
-            case SheildPosition.back:
-                startSheild = endSheild + Math.PI;
-                break;
-            case SheildPosition.equal:
-                endSheild = startSheild +  2 * Math.PI;
-                break;
-            case SheildPosition.front:
-                endSheild = startSheild + Math.PI;
-                break
+        if (this.shieldStrength > 0) {
+            ctx.beginPath();
+            // draw opacity according to strength out of 10
+            ctx.globalAlpha = this.shieldStrength / 8.0;
+            ctx.fillStyle = "#00B09D";
+            //start drawing sheild at -90, then adjust according to sheild position
+            let startSheild = this.direction - Math.PI / 2;
+            let endSheild = this.direction - Math.PI / 2;
+            switch (this.shieldPosition) {
+                case SheildPosition.back:
+                    startSheild = endSheild + Math.PI;
+                    break;
+                case SheildPosition.equal:
+                    endSheild = startSheild + 2 * Math.PI;
+                    break;
+                case SheildPosition.front:
+                    endSheild = startSheild + Math.PI;
+                    break
+            }
+            ctx.arc(cpX, cpY, multiplyer, startSheild, endSheild);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
         }
-        ctx.arc(cpX, cpY, multiplyer, startSheild, endSheild);
-        ctx.fill();
         //draw ship triangle
         ctx.beginPath();
         ctx.fillStyle = this.color;
@@ -109,6 +113,7 @@ class Ship extends drawableObject {
             ctx.fill();
         }
     }
+
     update() {
         // if no destination then idle
         if (!this.destination) {
@@ -132,27 +137,81 @@ class Ship extends drawableObject {
             this.y = toMoveY;
         }
     }
+
     collide(x, y) {
         x = parseFloat(x);
         y = parseFloat(y);
-        //TODO move to seperate function to not duplicate
-        let leftAngle = this.direction - (TIP_ANGLE / 2) + Math.PI;
-        let rightAngle = leftAngle + TIP_ANGLE;
+        if (this.checkCollideSheild(x, y)) {
+            return false; // since absorbed by sheild
+        }
+        if (this.checkCollideShip(x, y)) {
+            return true; // ship is destroyed
+        }
+    }
+
+    checkCollideSheild(x, y) {
+        // if no sheild then return
+        if (this.shieldStrength < 1) {
+            return false;
+        }
+        //check if point is withing shield radius
         let multiplyer = SHIP_SIDE * this.size;
-        let leftX = this.x + (multiplyer * Math.cos(leftAngle));
-        let leftY = this.y + (multiplyer * Math.sin(leftAngle));
-        let rightX = this.x + (multiplyer * Math.cos(rightAngle));
-        let rightY = this.y + (multiplyer * Math.sin(rightAngle));
+        let cpX = this.x - (multiplyer / 2 * Math.cos(this.direction));
+        let cpY = this.y - (multiplyer / 2 * Math.sin(this.direction));
+        let a = x - cpX;
+        let b = y - cpY;
+        let radius = Math.hypot(a, b);
+        let angle = Math.atan2(b, a);
+        if (radius > multiplyer) {
+            return false;
+        }
+        // if within sheild radius check if in right angle for sheild.
+        let left = this.direction - Math.PI / 2;
+        let right = left + Math.PI;
+        let adjustA, adjustE;
+        switch (this.shieldPosition) {
+            case SheildPosition.back:
+                adjustA = rad2Pos(angle - right);
+                adjustE = rad2Pos(left - right);
+                if (adjustA < adjustE) {
+                    this.shieldStrength--;
+                    return true;
+                }
+                return false;
+                break;
+            case SheildPosition.equal:
+                this.shieldStrength--;
+                return true;
+            case SheildPosition.front:
+                adjustA = rad2Pos(angle - left);
+                adjustE = rad2Pos(right - left);
+                if (adjustA < adjustE) {
+                    this.shieldStrength--;
+                    return true;
+                }
+                return false;
+                break
+        }
+    }
+
+    checkCollideShip(x, y) {
+        let leftRightXY = this.getLeftRightXY();
+        let leftX = leftRightXY["left"]["x"];
+        let leftY = leftRightXY["left"]["y"];
+        let rightX = leftRightXY["right"]["x"];
+        let rightY = leftRightXY["right"]["y"];
         //get total area and compare to subareas from collide point and rest of triangle
         let areaMain = this.getArea(this.x, this.y, leftX, leftY, rightX, rightY);
         let area1 = this.getArea(x, y, leftX, leftY, rightX, rightY);
         let area2 = this.getArea(this.x, this.y, x, y, rightX, rightY);
         let area3 = this.getArea(this.x, this.y, leftX, leftY, x, y);
-        return parseInt(areaMain) === parseInt(area1 + area2 + area3);
+        return (parseInt(areaMain) === parseInt(area1 + area2 + area3));
     }
+
     getArea(x1, y1, x2, y2, x3, y3) {
         return Math.abs(((x1 - x3) * (y2 - y1) - (x1 - x2) * (y3 - y1)) / 2);
     }
+
     navigateTo(x, y) {
         x = parseFloat(x);
         y = parseFloat(y);
@@ -166,5 +225,16 @@ class Ship extends drawableObject {
 
     setShields(position) {
         this.shieldPosition = position;
+    }
+
+    getLeftRightXY() {
+        let leftAngle = this.direction - (TIP_ANGLE / 2) + Math.PI;
+        let rightAngle = leftAngle + TIP_ANGLE;
+        let multiplyer = SHIP_SIDE * this.size;
+        let leftX = this.x + (multiplyer * Math.cos(leftAngle));
+        let leftY = this.y + (multiplyer * Math.sin(leftAngle));
+        let rightX = this.x + (multiplyer * Math.cos(rightAngle));
+        let rightY = this.y + (multiplyer * Math.sin(rightAngle));
+        return { "left": { "x": leftX, "y": leftY }, "right": { "x": rightX, "y": rightY } };
     }
 }

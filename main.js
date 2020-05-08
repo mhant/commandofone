@@ -9,8 +9,8 @@ function startGame() {
         gBoard.setSize();
     }
     let range = document.getElementById("sheild");
-    range.addEventListener("input", () => { 
-        setSliderHint(range); 
+    range.addEventListener("input", () => {
+        setSliderHint(range);
         if (pieces.length > 0) {
             pieces[0].setShields(parseInt(range.value));
         }
@@ -61,12 +61,17 @@ class GamePiece {
 
 function createShip(shipType) {
     pieces.push(new Ship(100, shipType === ShipType.CRUSER ? 100 : 200, shipType, 0));
+    // if first ship adjust sheild
+    if (pieces.length == 1) {
+        let range = document.getElementById("sheild");
+        pieces[0].setShields(parseInt(range.value));
+    }
 }
 
 function engage(x, y) {
     if (pieces.length > 0) {
         if (pieces[0].collide(x, y)) {
-            alert("hit");
+            pieces.splice(0, 1);
         }
         else {
             pieces[0].navigateTo(x, y);
@@ -116,7 +121,7 @@ function getHeight() {
 
 function setSliderHint(range) {
     let val = parseInt(range.value);
-    let dyno =document.querySelector('[data="dyno"]');
+    let dyno = document.querySelector('[data="dyno"]');
     switch (val) {
         case 1:
             dyno.innerHTML = ".slider { border-left: 5px solid #00B09D !important; border-right: 5px solid #2F4858 !important;}";
@@ -129,4 +134,11 @@ function setSliderHint(range) {
             break;
     }
 
+}
+// convert negative radians to positive
+function rad2Pos(rad) {
+    if (rad < 0) {
+        return rad + 2 * Math.PI;
+    }
+    return rad;
 }
