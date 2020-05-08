@@ -61,20 +61,24 @@ class Ship extends drawableObject {
         //draw sheild
         if (this.shieldStrength > 0) {
             ctx.beginPath();
-            // draw opacity according to strength out of 10
-            ctx.globalAlpha = this.shieldStrength / 8.0;
             ctx.fillStyle = "#00B09D";
             //start drawing sheild at -90, then adjust according to sheild position
             let startSheild = this.direction - Math.PI / 2;
             let endSheild = this.direction - Math.PI / 2;
             switch (this.shieldPosition) {
                 case SheildPosition.back:
+                    // draw opacity according to strength out of 10 ( 5 for half)
+                    ctx.globalAlpha = this.shieldStrength / 5.0;
                     startSheild = endSheild + Math.PI;
                     break;
                 case SheildPosition.equal:
+                    // draw opacity according to strength out of 10
+                    ctx.globalAlpha = this.shieldStrength / 10.0;
                     endSheild = startSheild + 2 * Math.PI;
                     break;
                 case SheildPosition.front:
+                    // draw opacity according to strength out of 10 ( 5 for half)
+                    ctx.globalAlpha = this.shieldStrength / 5.0;
                     endSheild = startSheild + Math.PI;
                     break
             }
