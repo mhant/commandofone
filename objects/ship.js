@@ -149,17 +149,18 @@ class Ship extends drawableObject {
             return;
         }
         if (this.engineState === EngineState.TURNING) {
-            // calculate next direction according to closing to destination direction
-            // TODO fix turn direction, not always doing shortest path
-            let changeDirect =
-                rad2Pos(this.destination['direction'] - this.direction)
-                    > rad2Pos(this.direction - this.destination['direction'])
-                    ? -1 : 1;
-            this.direction = rad2Pos(this.direction + (changeDirect * Math.PI / 34));
-            // If next is within pi/10, then pop to direction and change engine state
+            // if close enough click to correct direction
             if (Math.abs(this.destination['direction'] - this.direction) < Math.PI / 10) {
                 this.direction = this.destination['direction'];
                 this.engineState = EngineState.WARM;
+            }
+            else {// calculate next direction according to closing to destination direction
+                let changeDirect =
+                    rad2Pos(this.destination['direction'] - this.direction)
+                        > rad2Pos(this.direction - this.destination['direction'])
+                        ? -1 : 1;
+                this.direction = rad2Pos(this.direction + (changeDirect * Math.PI / 200));
+                // If next is within pi/10, then pop to direction and change engine state
             }
             return;
         }
