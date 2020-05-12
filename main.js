@@ -140,5 +140,8 @@ function rad2Pos(rad) {
     if (rad < 0) {
         return rad + 2 * Math.PI;
     }
+    else if (rad > 2 * Math.PI){
+        return rad - 2 * Math.PI;
+    }
     return rad;
 }

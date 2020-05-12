@@ -15,9 +15,11 @@ class SheildPosition {
 }
 //engine state defines how much of total speed can be used
 class EngineState {
-    static REST = 1;
+    static REST = 0;
+    static TURNING = 1;
     static WARM = 2;
-    static MAX = 50;
+    static MAX = 20;
+    static COOLPERIOD = this.MAX - this.WARM;
 }
 
 class Ship extends drawableObject {
@@ -146,6 +148,21 @@ class Ship extends drawableObject {
         if (!this.destination) {
             return;
         }
+        if (this.engineState === EngineState.TURNING) {
+            // calculate next direction according to closing to destination direction
+            // TODO fix turn direction, not always doing shortest path
+            let changeDirect =
+                rad2Pos(this.destination['direction'] - this.direction)
+                    > rad2Pos(this.direction - this.destination['direction'])
+                    ? -1 : 1;
+            this.direction = rad2Pos(this.direction + changeDirect * Math.PI / 10);
+            // If next is within pi/10, then pop to direction and change engine state
+            if (Math.abs(this.destination['direction'] - this.direction) < Math.PI / 10) {
+                this.direction = this.destination['direction'];
+                this.engineState = EngineState.WARM;
+            }
+            return;
+        }
         //calculate curr speed
         let engineCoeff = this.engineState === EngineState.MAX ? 1 : 0.4;
         let currSpeed = this.speed * engineCoeff;
@@ -169,10 +186,18 @@ class Ship extends drawableObject {
             this.y = toMoveY;
         }
         //adjust engine state when within 10 speed of distance
-        if (distToX < 10 * Math.abs(speedX) && distToY < 10 * Math.abs(speedY)) {
+
+        if (distToX < EngineState.COOLPERIOD * Math.abs(speedX)
+            &&
+            distToY < EngineState.COOLPERIOD * Math.abs(speedY)) {
             this.engineState = EngineState.WARM;
         }
-        else if (this.engineState < EngineState.MAX) {
+        // Else if engine is warming up, increase warm state
+        else if (
+            this.engineState < EngineState.MAX
+            &&
+            this.engineState >= EngineState.WARM
+        ) {
             this.engineState++;
         }
     }
@@ -259,9 +284,9 @@ class Ship extends drawableObject {
         if (this.x === x && this.y === y) {
             return;
         }
-        this.destination = { 'x': x, 'y': y };
-        this.engineState = EngineState.WARM;
-        this.direction = Math.atan2(y - this.y, x - this.x);
+        let destDirection = Math.atan2(y - this.y, x - this.x);
+        this.destination = { 'x': x, 'y': y, 'direction': rad2Pos(destDirection) };
+        this.engineState = EngineState.TURNING;
     }
 
     setShields(position) {
