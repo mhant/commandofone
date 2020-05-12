@@ -58,34 +58,48 @@ class Ship extends drawableObject {
         let rightY = leftRightXY["right"]["y"];
         let cpX = this.x - (multiplyer / 2 * Math.cos(this.direction));
         let cpY = this.y - (multiplyer / 2 * Math.sin(this.direction));
-        //draw sheild
+
         if (this.shieldStrength > 0) {
-            ctx.beginPath();
-            ctx.fillStyle = "#00B09D";
-            //start drawing sheild at -90, then adjust according to sheild position
-            let startSheild = this.direction - Math.PI / 2;
-            let endSheild = this.direction - Math.PI / 2;
-            switch (this.shieldPosition) {
-                case SheildPosition.back:
-                    // draw opacity according to strength out of 10 ( 5 for half)
-                    ctx.globalAlpha = this.shieldStrength / 5.0;
-                    startSheild = endSheild + Math.PI;
-                    break;
-                case SheildPosition.equal:
-                    // draw opacity according to strength out of 10
-                    ctx.globalAlpha = this.shieldStrength / 10.0;
-                    endSheild = startSheild + 2 * Math.PI;
-                    break;
-                case SheildPosition.front:
-                    // draw opacity according to strength out of 10 ( 5 for half)
-                    ctx.globalAlpha = this.shieldStrength / 5.0;
-                    endSheild = startSheild + Math.PI;
-                    break
-            }
-            ctx.arc(cpX, cpY, multiplyer, startSheild, endSheild);
-            ctx.fill();
-            ctx.globalAlpha = 1.0;
+            this.drawSheild(ctx, cpX, cpY, multiplyer);
         }
+
+        this.drawShip(ctx, leftX, leftY, rightX, rightY, cpX, cpY, multiplyer);
+
+        //draw dest and plume if dest exists
+        if (this.destination) {
+            this.drawDestPlume(ctx, multiplyer);
+        }
+    }
+
+    drawSheild(ctx, cpX, cpY, multiplyer) {
+        ctx.beginPath();
+        ctx.fillStyle = "#00B09D";
+        //start drawing sheild at -90, then adjust according to sheild position
+        let startSheild = this.direction - Math.PI / 2;
+        let endSheild = this.direction - Math.PI / 2;
+        switch (this.shieldPosition) {
+            case SheildPosition.back:
+                // draw opacity according to strength out of 10 ( 5 for half)
+                ctx.globalAlpha = this.shieldStrength / 5.0;
+                startSheild = endSheild + Math.PI;
+                break;
+            case SheildPosition.equal:
+                // draw opacity according to strength out of 10
+                ctx.globalAlpha = this.shieldStrength / 10.0;
+                endSheild = startSheild + 2 * Math.PI;
+                break;
+            case SheildPosition.front:
+                // draw opacity according to strength out of 10 ( 5 for half)
+                ctx.globalAlpha = this.shieldStrength / 5.0;
+                endSheild = startSheild + Math.PI;
+                break
+        }
+        ctx.arc(cpX, cpY, multiplyer, startSheild, endSheild);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+    }
+
+    drawShip(ctx, leftX, leftY, rightX, rightY, cpX, cpY, multiplyer) {
         //draw ship triangle
         ctx.beginPath();
         ctx.fillStyle = this.color;
@@ -98,24 +112,24 @@ class Ship extends drawableObject {
         ctx.fillStyle = "#9c22e3";
         ctx.arc(cpX, cpY, multiplyer / 8, 0, 2 * Math.PI);
         ctx.fill();
-        //draw dest and plume if dest exists
-        if (this.destination) {
-            // draw dest
-            ctx.beginPath();
-            ctx.lineWidth = 5;
-            ctx.strokeStyle = "#03b1fc";
-            ctx.arc(this.destination['x'], this.destination['y'], 10, 0, 2 * Math.PI);
-            ctx.stroke();
-            //reset linewidth
-            ctx.lineWidth = 1;
-            //tail point
-            ctx.beginPath();
-            ctx.fillStyle = "#fcba03";
-            let dpX = this.x - (multiplyer * Math.cos(this.direction));
-            let dpY = this.y - (multiplyer * Math.sin(this.direction));
-            ctx.arc(dpX, dpY, multiplyer / 10, 0, 2 * Math.PI);
-            ctx.fill();
-        }
+    }
+
+    drawDestPlume(ctx, multiplyer) {
+        // draw dest
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#03b1fc";
+        ctx.arc(this.destination['x'], this.destination['y'], 10, 0, 2 * Math.PI);
+        ctx.stroke();
+        //reset linewidth
+        ctx.lineWidth = 1;
+        //tail point
+        ctx.beginPath();
+        ctx.fillStyle = "#fcba03";
+        let dpX = this.x - (multiplyer * Math.cos(this.direction));
+        let dpY = this.y - (multiplyer * Math.sin(this.direction));
+        ctx.arc(dpX, dpY, multiplyer / 10, 0, 2 * Math.PI);
+        ctx.fill();
     }
 
     update() {
@@ -142,18 +156,18 @@ class Ship extends drawableObject {
         }
     }
 
-    collide(x, y) {
+    collide(x, y, damage = 1) {
         x = parseFloat(x);
         y = parseFloat(y);
-        if (this.checkCollideSheild(x, y)) {
+        if (this.checkCollideSheild(x, y, damage)) {
             return false; // since absorbed by sheild
         }
-        if (this.checkCollideShip(x, y)) {
+        if (this.checkCollideShip(x, y, damage)) {
             return true; // ship is destroyed
         }
     }
 
-    checkCollideSheild(x, y) {
+    checkCollideSheild(x, y, damage) {
         // if no sheild then return
         if (this.shieldStrength < 1) {
             return false;
@@ -178,19 +192,20 @@ class Ship extends drawableObject {
                 adjustA = rad2Pos(angle - right);
                 adjustE = rad2Pos(left - right);
                 if (adjustA < adjustE) {
-                    this.shieldStrength--;
+                    this.shieldStrength -= damage;
                     return true;
                 }
                 return false;
                 break;
             case SheildPosition.equal:
-                this.shieldStrength--;
+                //when sheild is spread thin causes X2 damage
+                this.shieldStrength -= damage * 2;
                 return true;
             case SheildPosition.front:
                 adjustA = rad2Pos(angle - left);
                 adjustE = rad2Pos(right - left);
                 if (adjustA < adjustE) {
-                    this.shieldStrength--;
+                    this.shieldStrength -= damage;
                     return true;
                 }
                 return false;
@@ -198,7 +213,7 @@ class Ship extends drawableObject {
         }
     }
 
-    checkCollideShip(x, y) {
+    checkCollideShip(x, y, damage) {
         let leftRightXY = this.getLeftRightXY();
         let leftX = leftRightXY["left"]["x"];
         let leftY = leftRightXY["left"]["y"];
