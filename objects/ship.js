@@ -9,9 +9,15 @@ class ShipType {
 }
 
 class SheildPosition {
-    static back = 1;
-    static equal = 2;
-    static front = 3;
+    static BACK = 1;
+    static EQUAL = 2;
+    static FRONT = 3;
+}
+//engine state defines how much of total speed can be used
+class EngineState {
+    static REST = 1;
+    static WARM = 2;
+    static MAX = 50;
 }
 
 class Ship extends drawableObject {
@@ -24,13 +30,15 @@ class Ship extends drawableObject {
     #speed
     #shieldPosition
     #shieldStrength
+    #engineState
 
     constructor(x, y, type = ShipType.CRUSER, direction = 0) {
         super(x, y);
         this.origin = { 'x': x, 'y': y };
         this.type = type;
         this.direction = direction;
-        this.shieldPosition = SheildPosition.equal;
+        this.shieldPosition = SheildPosition.EQUAL;
+        this.engineState = EngineState.REST;
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
@@ -66,7 +74,7 @@ class Ship extends drawableObject {
         this.drawShip(ctx, leftX, leftY, rightX, rightY, cpX, cpY, multiplyer);
 
         //draw dest and plume if dest exists
-        if (this.destination) {
+        if (this.engineState !== EngineState.REST) {
             this.drawDestPlume(ctx, multiplyer);
         }
     }
@@ -78,17 +86,17 @@ class Ship extends drawableObject {
         let startSheild = this.direction - Math.PI / 2;
         let endSheild = this.direction - Math.PI / 2;
         switch (this.shieldPosition) {
-            case SheildPosition.back:
+            case SheildPosition.BACK:
                 // draw opacity according to strength out of 10 ( 5 for half)
                 ctx.globalAlpha = this.shieldStrength / 5.0;
                 startSheild = endSheild + Math.PI;
                 break;
-            case SheildPosition.equal:
+            case SheildPosition.EQUAL:
                 // draw opacity according to strength out of 10
                 ctx.globalAlpha = this.shieldStrength / 10.0;
                 endSheild = startSheild + 2 * Math.PI;
                 break;
-            case SheildPosition.front:
+            case SheildPosition.FRONT:
                 // draw opacity according to strength out of 10 ( 5 for half)
                 ctx.globalAlpha = this.shieldStrength / 5.0;
                 endSheild = startSheild + Math.PI;
@@ -123,12 +131,13 @@ class Ship extends drawableObject {
         ctx.stroke();
         //reset linewidth
         ctx.lineWidth = 1;
-        //tail point
+        // Tail engine
         ctx.beginPath();
         ctx.fillStyle = "#fcba03";
         let dpX = this.x - (multiplyer * Math.cos(this.direction));
         let dpY = this.y - (multiplyer * Math.sin(this.direction));
-        ctx.arc(dpX, dpY, multiplyer / 10, 0, 2 * Math.PI);
+        let sizeDivide = this.engineState < EngineState.MAX ? 20 : 10;
+        ctx.arc(dpX, dpY, multiplyer / sizeDivide, 0, 2 * Math.PI);
         ctx.fill();
     }
 
@@ -137,8 +146,11 @@ class Ship extends drawableObject {
         if (!this.destination) {
             return;
         }
-        let speedX = this.speed * Math.cos(this.direction);
-        let speedY = this.speed * Math.sin(this.direction);
+        //calculate curr speed
+        let engineCoeff = this.engineState === EngineState.MAX ? 1 : 0.4;
+        let currSpeed = this.speed * engineCoeff;
+        let speedX = currSpeed * Math.cos(this.direction);
+        let speedY = currSpeed * Math.sin(this.direction);
         let toMoveX = this.x + speedX;
         let toMoveY = this.y + speedY;
         let distToX = Math.round(Math.abs(toMoveX - this.destination['x']));
@@ -149,10 +161,19 @@ class Ship extends drawableObject {
             this.y = this.destination['y'];
             this.origin = this.destination;
             this.destination = null;
+            this.engineState = EngineState.REST;
+            return;
         }
         else {
             this.x = toMoveX;
             this.y = toMoveY;
+        }
+        //adjust engine state when within 10 speed of distance
+        if (distToX < 10 * Math.abs(speedX) && distToY < 10 * Math.abs(speedY)) {
+            this.engineState = EngineState.WARM;
+        }
+        else if (this.engineState < EngineState.MAX) {
+            this.engineState++;
         }
     }
 
@@ -188,7 +209,7 @@ class Ship extends drawableObject {
         let right = left + Math.PI;
         let adjustA, adjustE;
         switch (this.shieldPosition) {
-            case SheildPosition.back:
+            case SheildPosition.BACK:
                 adjustA = rad2Pos(angle - right);
                 adjustE = rad2Pos(left - right);
                 if (adjustA < adjustE) {
@@ -197,11 +218,11 @@ class Ship extends drawableObject {
                 }
                 return false;
                 break;
-            case SheildPosition.equal:
+            case SheildPosition.EQUAL:
                 //when sheild is spread thin causes X2 damage
                 this.shieldStrength -= damage * 2;
                 return true;
-            case SheildPosition.front:
+            case SheildPosition.FRONT:
                 adjustA = rad2Pos(angle - left);
                 adjustE = rad2Pos(right - left);
                 if (adjustA < adjustE) {
@@ -239,6 +260,7 @@ class Ship extends drawableObject {
             return;
         }
         this.destination = { 'x': x, 'y': y };
+        this.engineState = EngineState.WARM;
         this.direction = Math.atan2(y - this.y, x - this.x);
     }
 
