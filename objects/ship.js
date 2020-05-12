@@ -2,6 +2,7 @@
 // with angles 0.78958695 rad, 67.38°, 67.38°
 const TIP_ANGLE = 0.78958695;
 const SHIP_SIDE = 13;
+const TURN_SPEED = Math.PI / 200;
 
 class ShipType {
     static CRUSER = "cruser";
@@ -150,7 +151,7 @@ class Ship extends drawableObject {
         }
         if (this.engineState === EngineState.TURNING) {
             // if close enough click to correct direction
-            if (Math.abs(this.destination['direction'] - this.direction) < Math.PI / 10) {
+            if (Math.abs(this.destination['direction'] - this.direction) < TURN_SPEED) {
                 this.direction = this.destination['direction'];
                 this.engineState = EngineState.WARM;
             }
@@ -159,7 +160,7 @@ class Ship extends drawableObject {
                     rad2Pos(this.destination['direction'] - this.direction)
                         > rad2Pos(this.direction - this.destination['direction'])
                         ? -1 : 1;
-                this.direction = rad2Pos(this.direction + (changeDirect * Math.PI / 200));
+                this.direction = rad2Pos(this.direction + (changeDirect * TURN_SPEED));
                 // If next is within pi/10, then pop to direction and change engine state
             }
             return;
