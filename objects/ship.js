@@ -187,15 +187,8 @@ class Ship extends drawableObject {
             this.x = toMoveX;
             this.y = toMoveY;
         }
-        //adjust engine state when within 10 speed of distance
-
-        if (distToX < EngineState.COOLPERIOD * Math.abs(speedX)
-            &&
-            distToY < EngineState.COOLPERIOD * Math.abs(speedY)) {
-            this.engineState = EngineState.WARM;
-        }
-        // Else if engine is warming up, increase warm state
-        else if (
+        // If engine is warming up, increase warm state
+        if (
             this.engineState < EngineState.MAX
             &&
             this.engineState >= EngineState.WARM
