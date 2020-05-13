@@ -1,7 +1,7 @@
 const MISSILE_DIAM = 4;
 const MISSILE_SPEED = 4;
 
-class Missile extends drawableObject {
+class Missile extends DrawableObject {
     #target
     #direction
     constructor(x, y, target) {

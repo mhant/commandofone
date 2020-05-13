@@ -1,4 +1,10 @@
-class drawableObject {
+class CollideState{
+    static MISS = 0;
+    static HIT = 1;
+    static KILL = 2;
+}
+
+class DrawableObject {
     #x
     #y
     constructor(x, y) {

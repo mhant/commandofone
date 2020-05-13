@@ -70,7 +70,7 @@ function createShip(shipType) {
 
 function engage(x, y) {
     if (pieces.length > 0) {
-        if (pieces[0].collide(x, y)) {
+        if (pieces[0].collide(x, y) === CollideState.KILL) {
             pieces.splice(0, 1);
         }
         else {
@@ -91,11 +91,25 @@ function updateGameArea() {
         // pieces[i].x += 1;
         pieces[i].update();
         pieces[i].draw(gBoard.context);
+        //check collides
+        for (j = 0; j < pieces.length; j++) {
+            if (j === i || !(pieces[j] instanceof Missile)) {
+                continue;
+            }
+            var hit = pieces[i].collide(pieces[j].x, pieces[j].y);
+            if (hit > CollideState.MISS) {
+                pieces.splice(j, 1);
+                if (hit === CollideState.KILL) {
+                    pieces.splice(i, 1);
+                }
+            }
+        }
     }
+
 }
 
-function createMissile(){
-    if(pieces.length > 0 && pieces[0] instanceof Ship){
+function createMissile() {
+    if (pieces.length > 0 && pieces[0] instanceof Ship) {
         pieces.push(new Missile(0, 0, pieces[0]));
     }
 }
@@ -146,7 +160,7 @@ function rad2Pos(rad) {
     if (rad < 0) {
         return rad + 2 * Math.PI;
     }
-    else if (rad > 2 * Math.PI){
+    else if (rad > 2 * Math.PI) {
         return rad - 2 * Math.PI;
     }
     return rad;

@@ -23,7 +23,7 @@ class EngineState {
     static COOLPERIOD = this.MAX - this.WARM;
 }
 
-class Ship extends drawableObject {
+class Ship extends DrawableObject {
     #type
     #direction
     #size
@@ -201,11 +201,12 @@ class Ship extends drawableObject {
         x = parseFloat(x);
         y = parseFloat(y);
         if (this.checkCollideSheild(x, y, damage)) {
-            return false; // since absorbed by sheild
+            return CollideState.HIT;
         }
         if (this.checkCollideShip(x, y, damage)) {
-            return true; // ship is destroyed
+            return CollideState.KILL;
         }
+        return CollideState.MISS;
     }
 
     checkCollideSheild(x, y, damage) {
