@@ -2,7 +2,7 @@
 // with angles 0.78958695 rad, 67.38°, 67.38°
 const TIP_ANGLE = 0.78958695;
 const SHIP_SIDE = 13;
-const TURN_SPEED = Math.PI / 200;
+const TURN_SPEED = Math.PI / 100;
 
 class ShipType {
     static CRUSER = "cruser";
@@ -19,7 +19,7 @@ class EngineState {
     static REST = 0;
     static TURNING = 1;
     static WARM = 2;
-    static MAX = 20;
+    static MAX = 10;
     static COOLPERIOD = this.MAX - this.WARM;
 }
 

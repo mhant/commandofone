@@ -94,6 +94,12 @@ function updateGameArea() {
     }
 }
 
+function createMissile(){
+    if(pieces.length > 0 && pieces[0] instanceof Ship){
+        pieces.push(new Missile(0, 0, pieces[0]));
+    }
+}
+
 function everyinterval(n) {
     if ((myGameArea.frameNo / n) % 1 == 0) { return true; }
     return false;
