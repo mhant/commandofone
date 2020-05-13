@@ -93,7 +93,7 @@ function updateGameArea() {
         pieces[i].draw(gBoard.context);
         //check collides
         for (j = 0; j < pieces.length; j++) {
-            if (j === i || !(pieces[j] instanceof Missile)) {
+            if (j === i || !(pieces[j] instanceof Missile) || !(pieces[i] instanceof Ship)) {
                 continue;
             }
             var hit = pieces[i].collide(pieces[j].x, pieces[j].y);
