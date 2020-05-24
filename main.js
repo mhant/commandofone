@@ -1,5 +1,4 @@
 var pieces = [];
-var myGamePiece;
 var gBoard;
 
 function startGame() {
@@ -38,24 +37,8 @@ class GameBoard {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     setSize() {
-        this.canvas.width = getWidth() - 100;
-        this.canvas.height = getHeight() - 200;
-    }
-}
-
-
-class GamePiece {
-    constructor(width, height, color, x, y) {
-        this.width = width;
-        this.height = height;
-        this.color = color;
-        this.x = x;
-        this.y = y;
-    }
-    draw() {
-        let ctx = gBoard.context;
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        this.canvas.width = getWidth() - 50;
+        this.canvas.height = getHeight() - 75;
     }
 }
 
