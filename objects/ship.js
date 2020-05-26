@@ -3,6 +3,7 @@
 const TIP_ANGLE = 0.78958695;
 const SHIP_SIDE = 13;
 const TURN_SPEED = Math.PI / 100;
+const FEILD_VISION = Math.PI / 8;
 
 class ShipType {
     static CRUSER = "cruser";
@@ -23,6 +24,12 @@ class EngineState {
     static COOLPERIOD = this.MAX - this.WARM;
 }
 
+//state of firing missiles
+class MissileState {
+    static READY = 0;
+    static COOLDOWN = 50;
+}
+
 class Ship extends DrawableObject {
     #type
     #direction
@@ -34,6 +41,9 @@ class Ship extends DrawableObject {
     #shieldPosition
     #shieldStrength
     #engineState
+    #enemy // for enemy ships only draw sensor, for our ship only draw sheild
+    #missilecount
+    #missilestate // current state of firing component, needs cooldown
 
     constructor(x, y, type = ShipType.CRUSER, direction = 0) {
         super(x, y);
@@ -42,18 +52,22 @@ class Ship extends DrawableObject {
         this.direction = direction;
         this.shieldPosition = SheildPosition.EQUAL;
         this.engineState = EngineState.REST;
+        this.enemy = true;
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
                 this.color = "#5c5b5c";
                 this.speed = 5;
                 this.shieldStrength = 2;
+                this.enemy = false;
                 break;
             case ShipType.CORVETTE:
                 this.size = 10;
                 this.color = "#ff8080";
                 this.speed = 3;
                 this.shieldStrength = 4;
+                this.missilecount = 2;
+                this.missilestate = MissileState.READY;
                 break;
         }
 
@@ -61,6 +75,7 @@ class Ship extends DrawableObject {
 
     draw(ctx) {
         // X & Y is tip of ship and direction is angle of base-middle
+        // calculate other important points
         let multiplyer = SHIP_SIDE * this.size;
         let leftRightXY = this.getLeftRightXY();
         let leftX = leftRightXY["left"]["x"];
@@ -69,8 +84,10 @@ class Ship extends DrawableObject {
         let rightY = leftRightXY["right"]["y"];
         let cpX = this.x - (multiplyer / 2 * Math.cos(this.direction));
         let cpY = this.y - (multiplyer / 2 * Math.sin(this.direction));
-
-        if (this.shieldStrength > 0) {
+        if (this.enemy) {
+            this.drawDetectCone(ctx, multiplyer);
+        }
+        else if (this.shieldStrength > 0) {
             this.drawSheild(ctx, cpX, cpY, multiplyer);
         }
 
@@ -80,6 +97,29 @@ class Ship extends DrawableObject {
         if (this.engineState !== EngineState.REST) {
             this.drawDestPlume(ctx, multiplyer);
         }
+    }
+
+    drawDetectCone(ctx, multiplyer) {
+        let revDirLeft = this.direction - FEILD_VISION;
+        let revDirRight = revDirLeft + (FEILD_VISION * 2);
+        let leftX = this.x + (2 * multiplyer * Math.cos(revDirLeft));
+        let leftY = this.y + (2 * multiplyer * Math.sin(revDirLeft));
+        let rightX = this.x + (2 * multiplyer * Math.cos(revDirRight));
+        let rightY = this.y + (2 * multiplyer * Math.sin(revDirRight));
+        ctx.fillStyle = "#39F057";
+        ctx.globalAlpha = 0.4;
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(leftX, leftY);
+        ctx.lineTo(rightX, rightY);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2 * multiplyer, revDirLeft, revDirRight);
+        ctx.fill();
+        ctx.closePath();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "#00B09D";
     }
 
     drawSheild(ctx, cpX, cpY, multiplyer) {
@@ -107,6 +147,7 @@ class Ship extends DrawableObject {
         }
         ctx.arc(cpX, cpY, multiplyer, startSheild, endSheild);
         ctx.fill();
+        ctx.closePath();
         ctx.globalAlpha = 1.0;
     }
 
@@ -118,11 +159,13 @@ class Ship extends DrawableObject {
         ctx.lineTo(leftX, leftY);
         ctx.lineTo(rightX, rightY);
         ctx.fill();
+        ctx.closePath();
         //draw cockpit
         ctx.beginPath();
         ctx.fillStyle = "#9c22e3";
         ctx.arc(cpX, cpY, multiplyer / 8, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.closePath();
     }
 
     drawDestPlume(ctx, multiplyer) {
@@ -132,6 +175,7 @@ class Ship extends DrawableObject {
         ctx.strokeStyle = "#03b1fc";
         ctx.arc(this.destination['x'], this.destination['y'], 10, 0, 2 * Math.PI);
         ctx.stroke();
+        ctx.closePath();
         //reset linewidth
         ctx.lineWidth = 1;
         // Tail engine
@@ -142,9 +186,14 @@ class Ship extends DrawableObject {
         let sizeDivide = this.engineState < EngineState.MAX ? 20 : 10;
         ctx.arc(dpX, dpY, multiplyer / sizeDivide, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.closePath();
     }
 
     update() {
+        // if missile firing in cooldown, reduce cooldown state and return null
+        if (this.missilestate > MissileState.READY) {
+            this.missilestate--;
+        }
         // if no destination then idle
         if (!this.destination) {
             return;
@@ -298,5 +347,46 @@ class Ship extends DrawableObject {
         let rightX = this.x + (multiplyer * Math.cos(rightAngle));
         let rightY = this.y + (multiplyer * Math.sin(rightAngle));
         return { "left": { "x": leftX, "y": leftY }, "right": { "x": rightX, "y": rightY } };
+    }
+
+    detectShip(ship) {
+        if (!(ship instanceof Ship)) {
+            throw new Error('invalid detect object, must be a ship.');
+        }
+        //TODO move this calculation to central function
+        let otherCockpitMultiplyer = SHIP_SIDE * ship.size / 8;
+        let thisMultiplyer = SHIP_SIDE * this.size;
+        let dpX = ship.x - (otherCockpitMultiplyer * Math.cos(ship.direction));
+        let dpY = ship.y - (otherCockpitMultiplyer * Math.sin(ship.direction));
+        let revDirRight = this.direction - FEILD_VISION;
+        let revDirLeft = revDirRight + (FEILD_VISION * 2);
+        let a = this.x - dpX;
+        let b = this.y - dpY;
+        let distance = Math.hypot(a, b);
+        let angle = Math.atan2(this.y - dpY, dpX - this.x);
+        // TODO move 2 * multiplier to detect constant calculations
+        if (distance > 2 * thisMultiplyer) {
+            return false;
+        }
+        // Subtract start angle (left side of detect), which adjusts it to 0
+        // Ship angle should be above right angle (below the 0/2pi mark)
+        let adjustAngle = rad2Pos(angle - revDirLeft);
+        let adjustRight = rad2Pos(revDirRight - revDirLeft);
+        if (adjustAngle > adjustRight) {
+            return true;
+        }
+    }
+
+    fireMissile(ship) {
+        // if no missile  or not in ready state (see update) return null
+        if (this.missilecount < 1 || this.missilestate > MissileState.READY) {
+            return null;
+        }
+        this.missilecount--;
+        this.missilestate = MissileState.COOLDOWN;
+        let multiplyer = SHIP_SIDE * this.size;
+        let dpX = this.x + (Math.cos(this.direction));
+        let dpY = this.y + (Math.sin(this.direction));
+        return new Missile(dpX, dpY, ship, this);
     }
 }

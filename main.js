@@ -71,20 +71,38 @@ function updateGameArea() {
     gBoard.clear();
     gBoard.frameNo += 1;
     for (i = 0; i < pieces.length; i++) {
-        // pieces[i].x += 1;
         pieces[i].update();
         pieces[i].draw(gBoard.context);
-        //check collides
+        //check collides and detectes
         for (j = 0; j < pieces.length; j++) {
-            if (j === i || !(pieces[j] instanceof Missile) || !(pieces[i] instanceof Ship)) {
+            if (j === i) {
                 continue;
             }
-            var hit = pieces[i].collide(pieces[j].x, pieces[j].y);
-            if (hit > CollideState.MISS) {
-                pieces.splice(j, 1);
-                if (hit === CollideState.KILL) {
-                    pieces.splice(i, 1);
+            // check collides
+            if (
+                (pieces[j] instanceof Missile)
+                &&
+                (pieces[i] instanceof Ship)
+                &&
+                (pieces[j].owner !== pieces[i])
+            ) {
+                var hit = pieces[i].collide(pieces[j].x, pieces[j].y);
+                if (hit > CollideState.MISS) {
+                    pieces.splice(j, 1);
+                    if (hit === CollideState.KILL) {
+                        pieces.splice(i, 1);
+                    }
                 }
+            }
+            // check detects
+            if ((pieces[j] instanceof Ship) && pieces[j].enemy && (pieces[i] instanceof Ship)) {
+                if (pieces[j].detectShip(pieces[i])) {
+                    let newMissile = pieces[j].fireMissile(pieces[i]);
+                    if (newMissile !== null) {
+                        pieces.push(newMissile);
+                    }
+                }
+
             }
         }
     }
