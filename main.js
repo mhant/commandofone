@@ -2,6 +2,7 @@ var pieces = [];
 var gBoard;
 
 function startGame() {
+    window.addEventListener('keydown', this.keyPress, false);
     gBoard = new GameBoard();
     gBoard.start();
     window.onresize = function (event) {
@@ -97,9 +98,9 @@ function updateGameArea() {
                 }
             }
             // check reached gate
-            if ((pieces[j] instanceof Gate)  &&
-            (pieces[i] instanceof Ship) && !pieces[i].enemy){
-                if(pieces[j].collide(pieces[i].x, pieces[i].y)){
+            if ((pieces[j] instanceof Gate) &&
+                (pieces[i] instanceof Ship) && !pieces[i].enemy) {
+                if (pieces[j].collide(pieces[i].x, pieces[i].y)) {
                     alert("Reached Gate");
                     pieces.splice(j, 1);
                 }
@@ -167,9 +168,9 @@ function setSliderHint(range) {
 
 }
 
-function createGate(){
+function createGate() {
     if (pieces.length > 0 && pieces[0] instanceof Ship) {
-        pieces.push(new Gate(gBoard.width-50, gBoard.height/2));
+        pieces.push(new Gate(gBoard.width - 50, gBoard.height / 2));
     }
 }
 
@@ -182,4 +183,29 @@ function rad2Pos(rad) {
         return rad - 2 * Math.PI;
     }
     return rad;
+}
+
+function keyPress(key) {
+    var range = 2;
+    switch (key.keyCode) {
+        //A
+        case 65:
+            //call back sheild
+            range = 1;
+            break;
+        //S
+        case 83:
+            //call back sheild
+            range = 2;
+            break;
+        //D
+        case 68:
+            //call front sheild
+            range = 3
+            break;
+    }
+    var slider = document.getElementById("sheild");
+    slider.value = range;
+    pieces[0].setShields(range);
+    setSliderHint(range);
 }
