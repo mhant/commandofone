@@ -23,6 +23,8 @@ class GameBoard {
     #interval
     leftAdjust
     topAdjust
+    width
+    height
     start() {
         this.canvas = document.getElementById("gboard");
         this.setSize();
@@ -37,8 +39,8 @@ class GameBoard {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     setSize() {
-        this.canvas.width = getWidth() - 50;
-        this.canvas.height = getHeight() - 75;
+        this.canvas.width = this.width = getWidth() - 50;
+        this.canvas.height = this.height = getHeight() - 75;
     }
 }
 
@@ -92,6 +94,14 @@ function updateGameArea() {
                     if (hit === CollideState.KILL) {
                         pieces.splice(i, 1);
                     }
+                }
+            }
+            // check reached gate
+            if ((pieces[j] instanceof Gate)  &&
+            (pieces[i] instanceof Ship) && !pieces[i].enemy){
+                if(pieces[j].collide(pieces[i].x, pieces[i].y)){
+                    alert("Reached Gate");
+                    pieces.splice(j, 1);
                 }
             }
             // check detects
@@ -156,6 +166,13 @@ function setSliderHint(range) {
     }
 
 }
+
+function createGate(){
+    if (pieces.length > 0 && pieces[0] instanceof Ship) {
+        pieces.push(new Gate(gBoard.width-50, gBoard.height/2));
+    }
+}
+
 // convert negative radians to positive
 function rad2Pos(rad) {
     if (rad < 0) {

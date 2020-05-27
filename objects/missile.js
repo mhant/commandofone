@@ -19,6 +19,7 @@ class Missile extends DrawableObject {
         ctx.fillStyle = "#A1AF9F";
         ctx.arc(this.x, this.y, MISSILE_DIAM, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.closePath();
     }
 
     update() {

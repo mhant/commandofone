@@ -20,7 +20,7 @@ class EngineState {
     static REST = 0;
     static TURNING = 1;
     static WARM = 2;
-    static MAX = 10;
+    static MAX = 50;
     static COOLPERIOD = this.MAX - this.WARM;
 }
 
