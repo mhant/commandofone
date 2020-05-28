@@ -28,7 +28,11 @@ class Missile extends DrawableObject {
         let speedX = MISSILE_SPEED * Math.cos(this.direction);
         let speedY = MISSILE_SPEED * Math.sin(this.direction);
         // if within speed x of target move direct to target
-        if ((this.target.y - this.y) < speedY && (this.target.x - this.x) < speedX) {
+        if (
+            Math.abs(this.target.y - this.y) < Math.abs(speedY)
+            &&
+            Math.abs(this.target.x - this.x) < Math.abs(speedX)
+        ) {
             this.x = this.target.x;
             this.y = this.target.y;
         }

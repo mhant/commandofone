@@ -27,7 +27,7 @@ class EngineState {
 //state of firing missiles
 class MissileState {
     static READY = 0;
-    static COOLDOWN = 50;
+    static COOLDOWN = 200;
 }
 
 class Ship extends DrawableObject {
@@ -42,32 +42,39 @@ class Ship extends DrawableObject {
     #shieldStrength
     #engineState
     #enemy // for enemy ships only draw sensor, for our ship only draw sheild
-    #missilecount
-    #missilestate // current state of firing component, needs cooldown
+    #missileCount
+    #missileState // current state of firing component, needs cooldown
+    #route // predermined inifinite looping route
+    #currRoutePoint // current point in route
 
-    constructor(x, y, type = ShipType.CRUSER, direction = 0) {
+    constructor(x, y, type = ShipType.CRUSER, direction = 0, enemy = true, route = null) {
         super(x, y);
         this.origin = { 'x': x, 'y': y };
         this.type = type;
         this.direction = direction;
         this.shieldPosition = SheildPosition.EQUAL;
         this.engineState = EngineState.REST;
-        this.enemy = true;
+        this.enemy = enemy;
+        if (route !== null && Array.isArray(route) && route.length > 0) {
+            this.route = route;
+            this.currRoutePoint = -1; // so will iterate to item 0
+            this.nextRoutePoint();
+        }
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
                 this.color = "#5c5b5c";
-                this.speed = 5;
+                //non enemy cruser is the speed stealth, so faster
+                this.speed = this.enemy ? 3 : 5;
                 this.shieldStrength = 2;
-                this.enemy = false;
                 break;
             case ShipType.CORVETTE:
                 this.size = 10;
                 this.color = "#ff8080";
-                this.speed = 3;
+                this.speed = 2;
                 this.shieldStrength = 4;
-                this.missilecount = 2;
-                this.missilestate = MissileState.READY;
+                this.missileCount = 2;
+                this.missileState = MissileState.READY;
                 break;
         }
 
@@ -95,7 +102,11 @@ class Ship extends DrawableObject {
 
         //draw dest and plume if dest exists
         if (this.engineState !== EngineState.REST) {
-            this.drawDestPlume(ctx, multiplyer);
+            this.drawPlume(ctx, multiplyer);
+            // if not enemy draw destination marker
+            if (!this.enemy) {
+                this.drawDestMarker(ctx);
+            }
         }
     }
 
@@ -168,16 +179,7 @@ class Ship extends DrawableObject {
         ctx.closePath();
     }
 
-    drawDestPlume(ctx, multiplyer) {
-        // draw dest
-        ctx.beginPath();
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = "#03b1fc";
-        ctx.arc(this.destination['x'], this.destination['y'], 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        //reset linewidth
-        ctx.lineWidth = 1;
+    drawPlume(ctx, multiplyer) {
         // Tail engine
         ctx.beginPath();
         ctx.fillStyle = "#fcba03";
@@ -189,10 +191,22 @@ class Ship extends DrawableObject {
         ctx.closePath();
     }
 
+    drawDestMarker(ctx) {
+        // draw dest
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#03b1fc";
+        ctx.arc(this.destination['x'], this.destination['y'], 10, 0, 2 * Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        //reset linewidth
+        ctx.lineWidth = 1;
+    }
+
     update() {
         // if missile firing in cooldown, reduce cooldown state and return null
-        if (this.missilestate > MissileState.READY) {
-            this.missilestate--;
+        if (this.missileState > MissileState.READY) {
+            this.missileState--;
         }
         // if no destination then idle
         if (!this.destination) {
@@ -230,6 +244,10 @@ class Ship extends DrawableObject {
             this.origin = this.destination;
             this.destination = null;
             this.engineState = EngineState.REST;
+            // in case running routes, set new route
+            if (this.route != null) {
+                this.nextRoutePoint();
+            }
             return;
         }
         else {
@@ -334,6 +352,14 @@ class Ship extends DrawableObject {
         this.engineState = EngineState.TURNING;
     }
 
+    nextRoutePoint() {
+        if (this.route == null) {
+            return;
+        }
+        this.currRoutePoint = (this.currRoutePoint + 1) % this.route.length;
+        this.navigateTo(this.route[this.currRoutePoint].x, this.route[this.currRoutePoint].y);
+    }
+
     setShields(position) {
         this.shieldPosition = position;
     }
@@ -353,6 +379,10 @@ class Ship extends DrawableObject {
         if (!(ship instanceof Ship)) {
             throw new Error('invalid detect object, must be a ship.');
         }
+        // if fellow enemy don't detect
+        if (ship.enemy) {
+            return false;
+        }
         //TODO move this calculation to central function
         let otherCockpitMultiplyer = SHIP_SIDE * ship.size / 8;
         let thisMultiplyer = SHIP_SIDE * this.size;
@@ -363,7 +393,7 @@ class Ship extends DrawableObject {
         let a = this.x - dpX;
         let b = this.y - dpY;
         let distance = Math.hypot(a, b);
-        let angle = Math.atan2(this.y - dpY, dpX - this.x);
+        let angle = rad2Pos(Math.atan2(dpY-this.y, dpX-this.x));
         // TODO move 2 * multiplier to detect constant calculations
         if (distance > 2 * thisMultiplyer) {
             return false;
@@ -379,11 +409,11 @@ class Ship extends DrawableObject {
 
     fireMissile(ship) {
         // if no missile  or not in ready state (see update) return null
-        if (this.missilecount < 1 || this.missilestate > MissileState.READY) {
+        if (this.missileCount < 1 || this.missileState > MissileState.READY) {
             return null;
         }
-        this.missilecount--;
-        this.missilestate = MissileState.COOLDOWN;
+        this.missileCount--;
+        this.missileState = MissileState.COOLDOWN;
         let multiplyer = SHIP_SIDE * this.size;
         let dpX = this.x + (Math.cos(this.direction));
         let dpY = this.y + (Math.sin(this.direction));

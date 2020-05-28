@@ -8,6 +8,7 @@ function startGame() {
     window.onresize = function (event) {
         gBoard.setSize();
     }
+    pieces.push(new Ship(100, 100, ShipType.CRUSER, 0, false));
     let range = document.getElementById("sheild");
     range.addEventListener("input", () => {
         setSliderHint(range);
@@ -46,7 +47,11 @@ class GameBoard {
 }
 
 function createShip(shipType) {
-    pieces.push(new Ship(100, shipType === ShipType.CRUSER ? 100 : 200, shipType, 0));
+    // get random X between 200 and width of screen - 200
+    let x = Math.floor(Math.random() * (gBoard.width - 400)) + 200;
+    let minY = 100;
+    let maxY = gBoard.height - 100;
+    pieces.push(new Ship(x, minY, shipType, 0, true, [{ "x": x, "y": maxY }, { "x": x, "y": minY }]));
     // if first ship adjust sheild
     if (pieces.length == 1) {
         let range = document.getElementById("sheild");
