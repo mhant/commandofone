@@ -1,4 +1,9 @@
 var gController;
+var introController;
+
+function intro(){
+    introController = new HowToController(startGame);
+}
 
 function startGame() {
     // ensure that width is at least 600 for at least one enemy

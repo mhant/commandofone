@@ -18,10 +18,13 @@
     <script src="controllers/menuController.js"></script>
 </head>
 
-<body onload="startGame()">
-    <style data="dyno" type="text/css"></style>
-    <input type="range" class="slider" min="1" max="3" value="2" id="sheild">
-    <canvas id="gboard"></canvas>
+<body onload="intro()">
+    <div id="gameboard" style="display:none">
+        <style data="dyno" type="text/css"></style>
+        <input type="range" class="slider" min="1" max="3" value="2" id="sheild">
+        <canvas id="gboard"></canvas>
+    </div>
+    <img id="tutorial"></img>
     <br />
 
 </body>

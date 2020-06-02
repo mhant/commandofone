@@ -32,6 +32,7 @@ class GameController {
         ) {
             throw Error("Invalid game piece setup config");
         }
+        document.getElementById("gameboard").style.display = "block";
         this.callbackHandler = callbackHandler;
         this.gameOver = false;
         // to keep class ref in callbacks
