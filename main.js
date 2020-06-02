@@ -1,9 +1,9 @@
 var gController;
 
 function startGame() {
-    // ensure that width is at least 1260
-    if (getWidth() < 1260) {
-        alert("Please enlarge browser to at least 1280px width and refresh page.");
+    // ensure that width is at least 600 for at least one enemy
+    if (getWidth() < 600) {
+        alert("Please enlarge browser to at least 600px width and refresh page.");
         return;
     }
     let playerPlace = { "x": 100, "y": 100 };
@@ -33,8 +33,12 @@ function randomEnemies() {
     var enemyTypesPlaces = [];
     let width = getWidth() - 50;
     let height = getHeight() - 75;
+    //calculate how many enemies we can support
+    let maxEnemies = Math.floor((width - 400) / 200);
     //random amount between 3 and 5
-    let count = Math.floor(Math.random() * 3) + 3;
+    var count = Math.floor(Math.random() * 3) + 3;
+    // max random count of enemis for screen
+    count = Math.min(count, maxEnemies);
     for (var i = 0; i < count; i++) {
         let shipType = (Math.floor(Math.random() * 2)) > 0 ? ShipType.CRUSER : ShipType.CORVETTE;
         // get random X between 200 and width of screen - 200
