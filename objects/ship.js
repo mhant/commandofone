@@ -8,6 +8,7 @@ const FEILD_VISION = Math.PI / 8;
 class ShipType {
     static CRUSER = "cruser";
     static CORVETTE = "corvette";
+    static STEALTH = "stealth";
 }
 
 class SheildPosition {
@@ -63,18 +64,27 @@ class Ship extends DrawableObject {
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
-                this.color = "#5c5b5c";
+                this.color = "#008D9B";
                 //non enemy cruser is the speed stealth, so faster
-                this.speed = this.enemy ? 3 : 5;
+                this.speed = 3 ;
                 this.shieldStrength = 2;
+                this.missileCount = 2;
+                this.missileState = MissileState.READY;
                 break;
             case ShipType.CORVETTE:
                 this.size = 10;
-                this.color = "#ff8080";
+                this.color = "#164975";
                 this.speed = 2;
                 this.shieldStrength = 4;
                 this.missileCount = 2;
                 this.missileState = MissileState.READY;
+                break;
+            case ShipType.STEALTH:
+                this.size = 5;
+                this.color = "#141E13";
+                //non enemy cruser is the speed stealth, so faster
+                this.speed = 5;
+                this.shieldStrength = 2;
                 break;
         }
 
@@ -393,7 +403,7 @@ class Ship extends DrawableObject {
         let a = this.x - dpX;
         let b = this.y - dpY;
         let distance = Math.hypot(a, b);
-        let angle = rad2Pos(Math.atan2(dpY-this.y, dpX-this.x));
+        let angle = rad2Pos(Math.atan2(dpY - this.y, dpX - this.x));
         // TODO move 2 * multiplier to detect constant calculations
         if (distance > 2 * thisMultiplyer) {
             return false;
