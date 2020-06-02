@@ -75,7 +75,7 @@ function getWidth() {
         document.documentElement.clientWidth
     );
 }
-a
+
 function getHeight() {
     return Math.max(
         document.body.scrollHeight,
