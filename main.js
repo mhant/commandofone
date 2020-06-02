@@ -75,7 +75,7 @@ function getWidth() {
         document.documentElement.clientWidth
     );
 }
-
+a
 function getHeight() {
     return Math.max(
         document.body.scrollHeight,
@@ -89,10 +89,10 @@ function getHeight() {
 // convert negative radians to positive
 function rad2Pos(rad) {
     if (rad < 0) {
-        return rad + 2 * Math.PI;
+        return rad2Pos(rad + 2 * Math.PI);
     }
     else if (rad > 2 * Math.PI) {
-        return rad - 2 * Math.PI;
+        return rad2Pos(rad - 2 * Math.PI);
     }
     return rad;
 }

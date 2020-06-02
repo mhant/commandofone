@@ -234,7 +234,6 @@ class Ship extends DrawableObject {
                         > rad2Pos(this.direction - this.destination['direction'])
                         ? -1 : 1;
                 this.direction = rad2Pos(this.direction + (changeDirect * TURN_SPEED));
-                // If next is within pi/10, then pop to direction and change engine state
             }
             return;
         }
