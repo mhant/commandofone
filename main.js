@@ -7,11 +7,11 @@ function startGame() {
     gController = new GameController(playerPlace, enemyTypesPlaces, gatePlace, finishCallback);
 }
 
-function finishCallback(state){
-    if (state === LevelEndState.WIN){
+function finishCallback(state) {
+    if (state === LevelEndState.WIN) {
         alert("WIN");
     }
-    else{
+    else {
         alert("LOSE");
     }
     startGame();
@@ -21,20 +21,31 @@ function randomEnemies() {
     var enemyTypesPlaces = [];
     let width = getWidth() - 50;
     let height = getHeight() - 75;
-    //random amount between 2 and 6
-    let count = Math.floor(Math.random() * 4) + 2;
+    //random amount between 5 and 7
+    let count = Math.floor(Math.random() * 3) + 5;
     for (var i = 0; i < count; i++) {
         let shipType = (Math.floor(Math.random() * 2)) > 0 ? ShipType.CRUSER : ShipType.CORVETTE;
         // get random X between 200 and width of screen - 200
-        let x = Math.floor(Math.random() * (width - 400)) + 200;
+        let x = width - 400 - (i * 200);
         let minY = 100;
         let maxY = height - 100;
-        enemyTypesPlaces.push(
-            {
-                "x": x, "y": minY, "shipType": shipType, "route":
-                    [{ "x": x, "y": maxY }, { "x": x, "y": minY }]
-            }
-        );
+        // alternating directions
+        if (i % 2 === 0) {
+            enemyTypesPlaces.push(
+                {
+                    "x": x, "y": minY, "shipType": shipType, "route":
+                        [{ "x": x, "y": maxY }, { "x": x, "y": minY }]
+                }
+            );
+        }
+        else {
+            enemyTypesPlaces.push(
+                {
+                    "x": x, "y": maxY, "shipType": shipType, "route":
+                        [{ "x": x, "y": minY }, { "x": x, "y": maxY }]
+                }
+            );
+        }
     }
     return enemyTypesPlaces;
 }
