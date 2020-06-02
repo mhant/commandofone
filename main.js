@@ -1,10 +1,22 @@
 var gController;
 
 function startGame() {
+    // ensure that width is at least 1260
+    if (getWidth() < 1260) {
+        alert("Please enlarge browser to at least 1280px width and refresh page.");
+        return;
+    }
     let playerPlace = { "x": 100, "y": 100 };
     let enemyTypesPlaces = randomEnemies();
     let gatePlace = { "x": (getWidth() - 100), "y": ((getHeight() - 75) / 2) }
     gController = new GameController(playerPlace, enemyTypesPlaces, gatePlace, finishCallback);
+    window.onresize = function (event) {
+        // if not already ended, end game
+        if (!gController.gameOver){
+            gController.end();
+            alert("Do not resize during game, please refresh.");
+        }
+    }
 }
 
 function finishCallback(state) {
@@ -21,12 +33,12 @@ function randomEnemies() {
     var enemyTypesPlaces = [];
     let width = getWidth() - 50;
     let height = getHeight() - 75;
-    //random amount between 5 and 7
-    let count = Math.floor(Math.random() * 3) + 5;
+    //random amount between 3 and 5
+    let count = Math.floor(Math.random() * 3) + 3;
     for (var i = 0; i < count; i++) {
         let shipType = (Math.floor(Math.random() * 2)) > 0 ? ShipType.CRUSER : ShipType.CORVETTE;
         // get random X between 200 and width of screen - 200
-        let x = width - 400 - (i * 200);
+        let x = width - 200 - (i * 200);
         let minY = 100;
         let maxY = height - 100;
         // alternating directions

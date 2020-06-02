@@ -39,9 +39,6 @@ class GameController {
         window.addEventListener('keydown', function (key) { t.keyPress(key); }, false);
         this.gameBoard = new GameBoardController();
         this.gameBoard.start();
-        window.onresize = function (event) {
-            t.gameBoard.setSize();
-        }
         let range = document.getElementById("sheild");
         range.addEventListener("input", () => {
             t.setSliderHint(range);
@@ -168,4 +165,5 @@ class GameController {
         this.gameOver = true;
         this.gameBoard.clear();
     }
+
 }
