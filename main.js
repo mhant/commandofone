@@ -35,8 +35,8 @@ function randomEnemies() {
     let height = getHeight() - 75;
     //calculate how many enemies we can support
     let maxEnemies = Math.floor((width - 400) / 200);
-    //random amount between 3 and 5
-    var count = Math.floor(Math.random() * 3) + 3;
+    //random amount between 3 and 6
+    var count = Math.floor(Math.random() * 4) + 3;
     // max random count of enemis for screen
     count = Math.min(count, maxEnemies);
     for (var i = 0; i < count; i++) {
