@@ -92,7 +92,7 @@ function turnDirection() {
     let y = ((getHeight() - 75) / 2);
     return {
         "x": x, "y": y, "shipType": ShipType.CRUSER, "route":
-            getTurnRoute({ "x": x, "y": y }, (3 * Math.PI) / 4, ShipType.CRUSER)
+            getTurnRoute({ "x": x, "y": y }, Math.PI / 4, ShipType.CRUSER, Math.PI / 2)
     };
 }
 
@@ -134,14 +134,14 @@ function getPointRelativeTo(distX, distY, point) {
     return { "x": (distX + point.x), "y": (distY + point.y) };
 }
 // build route from point with turn of turnRad left & right for shipType
-function getTurnRoute(point, turnRad, shipType) {
+function getTurnRoute(point, turnRad, shipType, direction = 0) {
     let radius = ((shipType === ShipType.CORVETTE) ? 10 : 5) / 2;
     // get center of ship for turn, assuming default direction of 0 rad
     let cX = point.x - radius;
     let cY = point.y;
-    let x1 = cX + (radius * Math.cos(turnRad));
-    let y1 = cY + (radius * Math.sin(turnRad));
-    let x2 = cX + (radius * Math.cos(2 * turnRad));
-    let y2 = cY + (radius * Math.sin(2 * turnRad));
+    let x1 = cX + (radius * Math.cos(direction + turnRad));
+    let y1 = cY + (radius * Math.sin(direction + turnRad));
+    let x2 = cX + (radius * Math.cos(direction + (2 * turnRad)));
+    let y2 = cY + (radius * Math.sin(direction + (2 * turnRad)));
     return [{ "x": x1, "y": y1 }, { "x": x2, "y": y2 }];
 }
