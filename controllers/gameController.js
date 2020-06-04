@@ -40,6 +40,7 @@ class GameController {
         window.addEventListener('keydown', function (key) { t.keyPress(key); }, false);
         this.gameBoard = new GameBoardController();
         this.gameBoard.start();
+        this.initPieces(playerPlace, enemyTypesPlaces, gatePlace);
         let range = document.getElementById("sheild");
         range.addEventListener("input", () => {
             t.setSliderHint(range);
@@ -48,7 +49,9 @@ class GameController {
             }
         });
         this.setSliderHint(range);
-        this.initPieces(playerPlace, enemyTypesPlaces, gatePlace);
+        if (t.player) {
+            t.player.setShields(parseInt(range.value));
+        }
         this.missiles = [];
         this.interval = setInterval(
             function () {
