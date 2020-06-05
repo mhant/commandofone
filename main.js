@@ -11,10 +11,12 @@ function startGame() {
         alert("Please enlarge browser to at least 600px width and refresh page.");
         return;
     }
-    let playerPlace = { "x": 100, "y": 100 };
-    let enemyTypesPlaces = randomEnemies();
-    let gatePlace = { "x": (getWidth() - 100), "y": ((getHeight() - 75) / 2) };
-    gController = new GameController(playerPlace, enemyTypesPlaces, gatePlace, finishCallback);
+    var randGame = getRandomeGame();
+    // add callback function
+    randGame.push(finishCallback);
+    // need to add null as first arg
+    randGame.unshift(null);
+    gController = new (Function.prototype.bind.apply(GameController, randGame));
     window.onresize = function (event) {
         // if not already ended, end game
         if (!gController.gameOver) {
@@ -32,45 +34,6 @@ function finishCallback(state) {
         alert("LOSE");
     }
     startGame();
-}
-
-function randomEnemies() {
-    var enemyTypesPlaces = [];
-    let width = getWidth() - 50;
-    let height = getHeight() - 75;
-    //calculate how many enemies we can support
-    let maxEnemies = Math.floor((width - 400) / 200);
-    //random amount between 3 and 6
-    var count = Math.floor(Math.random() * 4) + 3;
-    // max random count of enemis for screen
-    count = Math.min(count, maxEnemies);
-    enemyTypesPlaces.push(relativeToGate());
-    enemyTypesPlaces.push(turnDirection());
-    for (var i = 2; i < count; i++) {
-        let shipType = (Math.floor(Math.random() * 2)) > 0 ? ShipType.CRUSER : ShipType.CORVETTE;
-        // get random X between 200 and width of screen - 200
-        let x = width - 200 - (i * 200);
-        let minY = 100;
-        let maxY = height - 100;
-        // alternating directions
-        if (i % 2 === 0) {
-            enemyTypesPlaces.push(
-                {
-                    "x": x, "y": minY, "shipType": shipType, "route":
-                        [{ "x": x, "y": maxY }, { "x": x, "y": minY }]
-                }
-            );
-        }
-        else {
-            enemyTypesPlaces.push(
-                {
-                    "x": x, "y": maxY, "shipType": shipType, "route":
-                        [{ "x": x, "y": minY }, { "x": x, "y": maxY }]
-                }
-            );
-        }
-    }
-    return enemyTypesPlaces;
 }
 
 function relativeToGate() {
