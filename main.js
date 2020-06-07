@@ -11,7 +11,8 @@ function startGame() {
         alert("Please enlarge browser to at least 600px width and refresh page.");
         return;
     }
-    var randGame = getRandomeGame();
+    // var randGame = getRandomeGame();
+    var randGame = parseLevel(0);
     // add callback function
     randGame.push(finishCallback);
     // need to add null as first arg

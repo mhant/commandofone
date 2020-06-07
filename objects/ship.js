@@ -56,11 +56,7 @@ class Ship extends DrawableObject {
         this.shieldPosition = SheildPosition.EQUAL;
         this.engineState = EngineState.REST;
         this.enemy = enemy;
-        if (route !== null && Array.isArray(route) && route.length > 0) {
-            this.route = route;
-            this.currRoutePoint = -1; // so will iterate to item 0
-            this.nextRoutePoint();
-        }
+        //preset ship configs
         switch (type) {
             case ShipType.CRUSER:
                 this.size = 5;
@@ -87,7 +83,12 @@ class Ship extends DrawableObject {
                 this.shieldStrength = 2;
                 break;
         }
-
+        // if route setup next point
+        if (route !== null && Array.isArray(route) && route.length > 0) {
+            this.route = route;
+            this.currRoutePoint = -1; // so will iterate to item 0
+            this.nextRoutePoint();
+        }
     }
 
     draw(ctx) {

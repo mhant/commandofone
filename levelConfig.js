@@ -14,7 +14,29 @@
  */
 var levels = [
     {
-
+        "name": "The Chase",
+        "playerPlace": { "x": 50, "y": "getHeight()/2" },
+        "gatePlace": { "x": "getWidth()-100", "y": "getHeight()/2-GATE_HEIGHT/2" },
+        "enemyTypesPlaces": [
+            {
+                "x": "playerPlace.x",
+                "y": "playerPlace.y + 200",
+                "shipType": ShipType.CRUSER,
+                "route": [{
+                    "x": "gatePlace.x - 100",
+                    "y": "gatePlace.y + 25 + GATE_HEIGHT"
+                }]
+            },
+            {
+                "x": "playerPlace.x",
+                "y": "playerPlace.y - 200",
+                "shipType": ShipType.CRUSER,
+                "route": [{
+                    "x": "gatePlace.x - 100",
+                    "y": "gatePlace.y - 25"
+                }]
+            }
+        ]
     }
 ];
 /**
@@ -56,12 +78,16 @@ function parseConfig(config) {
     else {
         gatePlace = getDefaultGatePlace();
     }
-    if ("enemyTypesPlace" in config) {
+    if ("enemyTypesPlaces" in config) {
         // try and parse enemyTypesPlace
         enemyTypesPlaces =
-            getEnemyTypesPlaceArray(config.enemyTypesPlaces);
+            getEnemyTypesPlaceArray(
+                config.enemyTypesPlaces,
+                playerPlace,
+                gatePlace
+            );
     }
-    if (enemyTypesPlaces === null) {
+    if (!enemyTypesPlaces) {
         enemyTypesPlaces = randomEnemies();
     }
     return [playerPlace, enemyTypesPlaces, gatePlace];
@@ -82,17 +108,41 @@ function validPlace(item) {
     return ("x" in item) && ("y" in item);
 }
 
-function getEnemyTypesPlaceArray(enemyArr) {
+function getEnemyTypesPlaceArray(
+    enemyArr,
+    //playerplace and gateplace could be used in eval
+    playerPlace,
+    gatePlace
+) {
     var retArray = [];
     if (!(enemyArr instanceof Array)) {
         return null;
     }
     for (var i = 0; i < enemyArr.length; i++) {
-        if (!validPlace(enemyArr[i])
-            || !("shipType" in enemyArr[i])) {
+        var enemy = enemyArr[i];
+        if (!validPlace(enemy)
+            || !("shipType" in enemy)) {
             return null;
         }
-        // TODO parse item and add to retArray
+        var enemyConfig = {
+            "x": eval(enemy.x),
+            "y": eval(enemy.y),
+            "shipType": enemy.shipType,
+
+        };
+        if ("route" in enemy && (enemy.route instanceof Array)) {
+            var route = [];
+            for (var j = 0; j < enemy.route.length; j++) {
+                var routePt = enemy.route[j];
+                if (!validPlace(routePt)) {
+                    return null;
+                }
+                route.push({ "x": eval(routePt.x), "y": eval(routePt.y) });
+            }
+            enemyConfig["route"] = route;
+        }
+        //get enemy places
+        retArray.push(enemyConfig);
     }
     return retArray;
 }
