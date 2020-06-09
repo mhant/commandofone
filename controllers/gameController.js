@@ -33,7 +33,9 @@ class GameController {
             throw Error("Invalid game piece setup config");
         }
         document.getElementById("gameboard").style.display = "block";
-        this.callbackHandler = callbackHandler;
+        this.callbackHandler = function(state){
+            callbackHandler(state);
+        };
         this.gameOver = false;
         // to keep class ref in callbacks
         var t = this;
@@ -167,6 +169,7 @@ class GameController {
     end() {
         clearInterval(this.interval);
         this.gameOver = true;
+        document.getElementById("gameboard").style.display = "none";
         this.gameBoard.clear();
     }
 

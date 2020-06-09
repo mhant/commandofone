@@ -1,25 +1,26 @@
 var gController;
 var introController;
-var menu;
+var menuController;
 
 function intro() {
-    introController = new HowToController(startGame);
+    introController = new HowToController(menu);
 }
 
 function menu(){
-    menu = new MenuController();
+    menuController = new MenuController();
 }
 
-function startGame() {
+function startGame(level) {
     // ensure that width is at least 600 for at least one enemy
     if (getWidth() < 600) {
         alert("Please enlarge browser to at least 600px width and refresh page.");
         return;
     }
     // var randGame = getRandomeGame();
-    var randGame = parseLevel(0);
+    var randGame = parseLevel(level);
     // add callback function
-    randGame.push(finishCallback);
+    var t = this;
+    randGame.push(t.finishCallback);
     // need to add null as first arg
     randGame.unshift(null);
     gController = new (Function.prototype.bind.apply(GameController, randGame));
@@ -39,7 +40,7 @@ function finishCallback(state) {
     else {
         alert("LOSE");
     }
-    startGame();
+    menu();
 }
 
 function relativeToGate() {

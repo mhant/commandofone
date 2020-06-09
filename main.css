@@ -52,10 +52,9 @@ canvas {
 
 /* Menu start*/
 
-#menu {
+#levels-menu {
     display: grid;
     grid-template-columns: repeat( auto-fill, minmax(150px, 1fr));
-    background-color: #00D286;
     padding: 10px;
     grid-row-gap: 10px;
 }
@@ -68,11 +67,28 @@ canvas {
     text-align: center;
 }
 
-#menu-tip{
+#menu-tip {
     background-color: #DBF9D8;
     border: 1px solid #2F4858;
     width: auto;
     text-align: center;
+}
+
+#tutorial-button {
+    background-color: #006982;
+    border: 1px solid #2F4858;
+    /* margin: 5px 0px 5px 30px; */
+    text-align: center;
+    font-size: 40px;
+    width: 100%;
+    border-top-width: 15px;
+    border-right-width: 30px;
+    border-left-width: 30px;
+    border-color: #00D286;
+}
+
+#menu {
+    background-color: #00D286;
 }
 
 /* Menu end */
