@@ -1,8 +1,13 @@
 var gController;
 var introController;
+var menu;
 
 function intro() {
     introController = new HowToController(startGame);
+}
+
+function menu(){
+    menu = new MenuController();
 }
 
 function startGame() {

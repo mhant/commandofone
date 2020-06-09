@@ -48,5 +48,31 @@ canvas {
     border-radius: 25px;
 }
 
-
 /* end of shield slider */
+
+/* Menu start*/
+
+#menu {
+    display: grid;
+    grid-template-columns: repeat( auto-fill, minmax(150px, 1fr));
+    background-color: #00D286;
+    padding: 10px;
+    grid-row-gap: 10px;
+}
+
+.menu-item {
+    background-color: #006982;
+    border: 1px solid #2F4858;
+    margin: 5px 20px 5px 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
+#menu-tip{
+    background-color: #DBF9D8;
+    border: 1px solid #2F4858;
+    width: auto;
+    text-align: center;
+}
+
+/* Menu end */

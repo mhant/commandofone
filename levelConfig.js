@@ -37,6 +37,63 @@ var levels = [
                 }]
             }
         ]
+    },
+    {
+        "name": "The Chase 2",
+    },
+    {
+        "name": "The Chase 3",
+    },
+    {
+        "name": "The Chase 4",
+    },
+    {
+        "name": "The Chase 5",
+    },
+    {
+        "name": "The Chase 6",
+    },
+    {
+        "name": "The Chase 7",
+    },
+    {
+        "name": "The Chase 8",
+    },
+    {
+        "name": "The Chase 9",
+    },
+    {
+        "name": "The Chase 10",
+    },
+    {
+        "name": "The Chase 11",
+    },
+    {
+        "name": "The Chase 12",
+    },
+    {
+        "name": "The Chase 13",
+    },
+    {
+        "name": "The Chase 14",
+    },
+    {
+        "name": "The Chase 15",
+    },
+    {
+        "name": "The Chase 16",
+    },
+    {
+        "name": "The Chase 17",
+    },
+    {
+        "name": "The Chase 18",
+    },
+    {
+        "name": "The Chase 19",
+    },
+    {
+        "name": "The Chase 20",
     }
 ];
 /**
