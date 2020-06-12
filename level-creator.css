@@ -1,0 +1,41 @@
+/* Color scheme: https://mycolor.space/?hex=%2339F057&sub=1 */
+
+/* Level creator start */
+
+#main-box {
+    background-color: #006982;
+    border: 1px solid #2F4858;
+    padding: 20px;
+    margin: 20px;
+    font-size: 30px;
+}
+
+span {
+    background-color: #DBF9D8;
+    border: 1px solid #2F4858;
+}
+
+#enemies {
+    background-color: #A1AF9F;
+    border: 5px solid #2F4858;
+    margin-bottom: 10px;
+}
+
+#enemy {
+    background-color: #A1AF9F;
+    border: 1px solid #2F4858;
+    padding: 10px;
+}
+
+button {
+    font-size: 30px;
+    background-color: #E6E6DA;
+    border: 10px solid #377ABB;
+    margin-top: 10px;
+}
+
+#player, #gate{
+    margin-bottom: 20px;
+}
+
+/* Level creator end */

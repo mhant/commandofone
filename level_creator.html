@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Used for dynamically setting style elimaents -->
+    <link rel="stylesheet" type="text/css" href="level-creator.css">
+    <!-- include objects -->
+    <script src="objects/drawableObject.js"></script>
+    <script src="objects/ship.js"></script>
+    <script src="objects/missile.js"></script>
+    <script src="objects/gate.js"></script>
+    <!-- include controllers -->
+    <script src="controllers/gameBoardController.js"></script>
+    <script src="controllers/gameController.js"></script>
+    <script src="controllers/howToController.js"></script>
+    <script src="controllers/menuController.js"></script>
+    <!-- main srcs -->
+    <script src="levelConfig.js"></script>
+    <script src="storage.js"></script>
+    <script src="main.js"></script>
+
+    <script src="level_creator.js"></script>
+</head>
+
+<body>
+    <div id="gameboard" style="display:none">
+        <style data="dyno" type="text/css"></style>
+        <input type="range" class="slider" min="1" max="3" value="2" id="sheild">
+        <canvas id="gboard"></canvas>
+    </div>
+    <div id="main-box">
+        <div id="player">
+            <span>Player x:</span>
+            <input id="player_x" type="text">
+            <span>y:</span>
+            <input id="player_y" type="text">
+        </div>
+        <div id="gate">
+            <span>Gate x:</span>
+            <input id="gate_x" type="text">
+            <span>y:</span>
+            <input id="gate_y" type="text">
+        </div>
+        <div id="enemies">
+            <div id="enemy">
+                <span>Enemy x:</span>
+                <input id="enemy_x" type="text">
+                <span>y:</span>
+                <input id="enemy_y" type="text">
+                <br />
+                <span>Type</span>
+                <select id="enemy_type">
+                    <option value="cruser">Cruser (small)</option>
+                    <option value="corvette">Corvette (big)</option>
+                  </select>
+                <span>Route:</span>
+                <input id="enemy_route" type="text">
+            </div>
+        </div>
+        <button id="add-enemy" onclick="addEnemy()">Add Enemy</button>
+        <br />
+        <button onclick="validate()">Validate</button>
+        <button onclick="play()">Play Level</button>
+    </div>
+</body>
+
+</html>
