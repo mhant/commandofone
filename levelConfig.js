@@ -40,7 +40,46 @@ var levels = [
     },
     {
         "name": "Chase and Guard",
-        "playerPlace": { "x": "50", "y": "getHeight()/2" }, "gatePlace": { "x": "getWidth()-100", "y": "getHeight()/2-GATE_HEIGHT/2" }, "enemyTypesPlaces": [{ "x": "playerPlace.x", "y": "playerPlace.y + 200", "shipType": "cruser", "route": [{ "x": "gatePlace.x - 100", "y": "gatePlace.y + 25 + GATE_HEIGHT" }, { "x": "gatePlace.x - 100", "y": "gatePlace.y - 25" }] }]
+        "playerPlace": {
+            "x": "50",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2-GATE_HEIGHT/2"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "playerPlace.x",
+                "y": "playerPlace.y + 200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "gatePlace.x - 100",
+                        "y": "gatePlace.y + 25 + GATE_HEIGHT"
+                    },
+                    {
+                        "x": "gatePlace.x - 100",
+                        "y": "gatePlace.y - 25"
+                    }
+                ]
+            },
+            {
+                "x": "playerPlace.x",
+                "y": "playerPlace.y - 200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "gatePlace.x - 100",
+                        "y": "gatePlace.y - 25"
+                    },
+                    {
+                        "x": "gatePlace.x - 100",
+                        "y": "gatePlace.y + 25 + GATE_HEIGHT"
+                    }
+                ]
+            }
+        ]
     },
     {
         "name": "The Chase 3",

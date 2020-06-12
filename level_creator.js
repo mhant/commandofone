@@ -57,12 +57,13 @@ function parseRoute(enemyNode) {
 }
 
 function play() {
+    // need to reset height width before configing
+    if (!creatorDiv) {
+        creatorDiv = document.getElementById("main-box");
+    }
+    creatorDiv.style.display = "none";
     var gameConfig = validate();
     if (gameConfig !== null) {
-        if (!creatorDiv) {
-            creatorDiv = document.getElementById("main-box");
-        }
-        creatorDiv.style.display = "none";
         var t = this;
         gameConfig.push(t.resume);
         gameConfig.unshift(null);
@@ -72,6 +73,9 @@ function play() {
                 gameConfig
             )
         );
+    }
+    else{
+        creatorDiv.style.display = "block";
     }
 }
 
@@ -119,6 +123,4 @@ function importJSON() {
             );
         enemies.appendChild(clone);
     }
-    var config = parseConfig(importJSON);
-    var stop = 1;
 }   
