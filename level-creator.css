@@ -38,4 +38,13 @@ button {
     margin-bottom: 20px;
 }
 
+#config-json{
+    font-size: 15px;
+}
+pre{
+    background-color: #E6E6DA;
+    border: 10px solid #2F4858;
+    font-family: "Lucida Console";
+}
+
 /* Level creator end */

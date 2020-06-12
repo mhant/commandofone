@@ -53,15 +53,21 @@
                 <select id="enemy_type">
                     <option value="cruser">Cruser (small)</option>
                     <option value="corvette">Corvette (big)</option>
-                  </select>
+                </select>
                 <span>Route:</span>
                 <input id="enemy_route" type="text">
             </div>
         </div>
         <button id="add-enemy" onclick="addEnemy()">Add Enemy</button>
         <br />
+        <input id="import-text" type="text" size="100"></input>
+        <button onclick="importJSON()">Import</button>
+        <br />
         <button onclick="validate()">Validate</button>
         <button onclick="play()">Play Level</button>
+        <br />
+        <b>Config JSON</b>
+        <pre id="config-json"></pre>
     </div>
 </body>
 

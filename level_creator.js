@@ -26,7 +26,12 @@ function validate() {
         "gatePlace": { "x": gateX, "y": gateY },
         "enemyTypesPlaces": enemyConfigs
     };
-    return parseConfig(configJson);
+    var config = parseConfig(configJson);
+    if (config) {
+        var displayArea = document.getElementById("config-json");
+        displayArea.innerHTML = JSON.stringify(configJson, "\n", "\t");
+    }
+    return config;
 }
 
 function getEnemyObject(enemyNode, playerX, playerY, gateX, gateY) {
@@ -61,10 +66,59 @@ function play() {
         var t = this;
         gameConfig.push(t.resume);
         gameConfig.unshift(null);
-        gController = new (Function.prototype.bind.apply(GameController, gameConfig));
+        gController = new (
+            Function.prototype.bind.apply(
+                GameController,
+                gameConfig
+            )
+        );
     }
 }
 
 function resume() {
     creatorDiv.style.display = "block";
 }
+
+function importJSON() {
+    var importText = document.getElementById("import-text").value;
+    var importJSON = JSON.parse(importText);
+    // Validate and populate text fields
+    if (!("playerPlace" in importJSON) ||
+        !(validPlace(importJSON.playerPlace))
+    ) {
+        throw Error("Invalid playerPlace");
+    }
+    document.getElementById("player_x").value = importJSON.playerPlace.x;
+    document.getElementById("player_y").value = importJSON.playerPlace.y;
+    if (!("gatePlace" in importJSON) ||
+        !(validPlace(importJSON.gatePlace))
+    ) {
+        throw Error("Invalid gatePlace");
+    }
+    document.getElementById("gate_x").value = importJSON.gatePlace.x;
+    document.getElementById("gate_y").value = importJSON.gatePlace.y;
+    if (!("enemyTypesPlaces" in importJSON) ||
+        !(importJSON.enemyTypesPlaces instanceof Array)
+    ) {
+        throw Error("Invalid enemyTypesPlaces");
+    }
+    var enemies = document.getElementById("enemies");
+    var template = document.getElementById("enemy").cloneNode(true);
+    enemies.innerHTML = "";
+    for (var i = 0; i < importJSON.enemyTypesPlaces.length; i++) {
+        var enemy = importJSON.enemyTypesPlaces[i];
+        var clone = template.cloneNode(true);
+        clone.querySelector("#" + "enemy_x").value = enemy.x;
+        clone.querySelector("#" + "enemy_y").value = enemy.y;
+        clone.querySelector("#" + "enemy_type").value = enemy.shipType;
+        clone.querySelector("#" + "enemy_route").value = JSON.stringify(enemy.route)
+            //remove first '[' & last ']'
+            .substring(
+                1,
+                JSON.stringify(enemy.route).length - 1
+            );
+        enemies.appendChild(clone);
+    }
+    var config = parseConfig(importJSON);
+    var stop = 1;
+}   
