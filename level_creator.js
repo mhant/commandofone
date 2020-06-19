@@ -1,4 +1,5 @@
 var creatorDiv;
+var instructDiv;
 
 function addEnemy() {
     var container = document.getElementById("enemies");
@@ -7,6 +8,21 @@ function addEnemy() {
 }
 
 function validate() {
+    var clipboard = new ClipboardJS('.btn');
+
+    clipboard.on('success', function (e) {
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
+
+        e.clearSelection();
+    });
+
+    clipboard.on('error', function (e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+    });
+    
     var playerX = document.getElementById("player_x").value;
     var playerY = document.getElementById("player_y").value;
     var gateX = document.getElementById("gate_x").value;
@@ -61,7 +77,10 @@ function play() {
     if (!creatorDiv) {
         creatorDiv = document.getElementById("main-box");
     }
-    creatorDiv.style.display = "none";
+    if (!instructDiv) {
+        instructDiv = document.getElementById("instructions");
+    }
+    creatorDiv.style.display = instructDiv.style.display = "none";
     var gameConfig = validate();
     if (gameConfig !== null) {
         var t = this;
@@ -74,13 +93,13 @@ function play() {
             )
         );
     }
-    else{
-        creatorDiv.style.display = "block";
+    else {
+        creatorDiv.style.display = instructDiv.style.display = "block";
     }
 }
 
 function resume() {
-    creatorDiv.style.display = "block";
+    creatorDiv.style.display = instructDiv.style.display = "block";
 }
 
 function importJSON() {

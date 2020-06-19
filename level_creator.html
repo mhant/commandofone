@@ -21,6 +21,7 @@
     <script src="main.js"></script>
 
     <script src="level_creator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 </head>
 
 <body>
@@ -60,14 +61,42 @@
         </div>
         <button id="add-enemy" onclick="addEnemy()">Add Enemy</button>
         <br />
-        <input id="import-text" type="text" size="100"></input>
+        <input id="import-text" type="text"></input>
         <button onclick="importJSON()">Import</button>
         <br />
         <button onclick="validate()">Validate</button>
         <button onclick="play()">Play Level</button>
         <br />
-        <b>Config JSON</b>
+        <b>Config JSON</b> <br />
+        <button class="btn" data-clipboard-target="#config-json">
+            Copy
+        </button>
         <pre id="config-json"></pre>
+
+    </div>
+    <div id="instructions">
+        <h1>Instructions</h1>
+        <b>Functions</b>
+        <p>You can use functions like <code>getHeight()</code> <code>getWidth()</code> to get the height/width of the
+            screen. You can also access constants like GATE_HEIGHT.</p>
+        <p>These can be combined with normal JS format for computations like half the height would be
+            <code>getHieght()/2</code>.</p>
+        <b>Relative</b>
+        <p>Enemies can be placed relative to the player or the gate by using shorthand <code>playerPlace</code> or
+            <code>gatePlace</code></p>
+        <p>For example to start the enemy 50 to the right of the player, you'd have Enemy
+            X = <code>playerPlace.x + 50</code>.</p>
+        <b>Route</b>
+        <p>Enemy routes should be in JSON format as a list of objects containing x,y
+            <code>{"x":"X1", "y":"Y1"}, {"x":"X2", "y":"Y2"}, ...</code>. <b>Ensure values and keys are in quotes.</b>
+        </p>
+        <p>For example to have the enemy patrol the game (50 above 50 below), route would be
+            <code>{"x":"gatePlace.x", "y":"gatePlace.y + 50"}, {"x":"gatePlace.x", "y":"gatePlace.y - 50"}</code></p>
+        <b>Operation</b>
+        <p>Click <b>Add Enemy</b> button to add an additional enemy to the level. Copy a previous config JSON to the
+            import text and click <b>Import</b> button to import that config.</p>
+        <p>Click <b>Validate</b> to validate your config. If valid a config JSON will be displayed below. This is what
+            is used for level config. Click <b>Play Level</b> button to test the level configed above</p>
     </div>
 </body>
 

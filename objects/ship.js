@@ -248,7 +248,7 @@ class Ship extends DrawableObject {
         let distToX = Math.round(Math.abs(toMoveX - this.destination['x']));
         let distToY = Math.round(Math.abs(toMoveY - this.destination['y']));
         //if we're within pixel of destination pop to destination
-        if (distToX < Math.abs(speedX) && distToY < Math.abs(speedY)) {
+        if (distToX <= Math.abs(speedX) && distToY <= Math.abs(speedY)) {
             this.x = this.destination['x'];
             this.y = this.destination['y'];
             this.origin = this.destination;

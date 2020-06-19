@@ -5,9 +5,22 @@
 #main-box {
     background-color: #006982;
     border: 1px solid #2F4858;
-    padding: 20px;
-    margin: 20px;
+    padding: 5px;
+    margin: 5px;
     font-size: 30px;
+    width: 50%;
+    float: left;
+}
+
+#instructions {
+    background-color: #006982;
+    border: 1px solid #2F4858;
+    font-size: 15px;
+    margin-top: 5px;
+    padding: 5px;
+    width: 45%;
+    float: right;
+    color: #E6E6DA;
 }
 
 span {
@@ -34,17 +47,29 @@ button {
     margin-top: 10px;
 }
 
-#player, #gate{
+#player, #gate {
     margin-bottom: 20px;
 }
 
-#config-json{
+#config-json {
     font-size: 15px;
+    width: auto;
+    height: auto;
 }
-pre{
+
+pre {
     background-color: #E6E6DA;
     border: 10px solid #2F4858;
     font-family: "Lucida Console";
+}
+
+p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button.btn{
+    font-size: 15px;
 }
 
 /* Level creator end */

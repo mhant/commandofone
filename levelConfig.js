@@ -82,58 +82,173 @@ var levels = [
         ]
     },
     {
-        "name": "The Chase 3",
+        "name": "To the Start",
+        "playerPlace": {
+            "x": "50",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2-GATE_HEIGHT/2"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2-200",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2+200",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            }
+        ]
     },
     {
-        "name": "The Chase 4",
+        "name": "Grid search",
+        "playerPlace": {
+            "x": "50",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2-GATE_HEIGHT/2"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "50",
+                "y": "50",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "getHeight()-100"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()-100"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "50"
+                    },
+                    {
+                        "x": "getWidth()-50",
+                        "y": "50"
+                    },
+                    {
+                        "x": "getWidth()-50",
+                        "y": "getHeight()-100"
+                    },
+                    {
+                        "x": "50",
+                        "y": "50"
+                    }
+                ]
+            },
+            {
+                "x": "50",
+                "y": "getHeight()-100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "50"
+                    },
+                    {
+                        "x": "50",
+                        "y": "getHeight()-100"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()-100"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "50"
+                    },
+                    {
+                        "x": "getWidth()-50",
+                        "y": "50"
+                    },
+                    {
+                        "x": "getWidth()-50",
+                        "y": "getHeight()-100"
+                    }
+                ]
+            }
+        ]
     },
     {
-        "name": "The Chase 5",
+        "name": "The Wall",
     },
     {
-        "name": "The Chase 6",
+        "name": "X Marks the Spot",
     },
     {
-        "name": "The Chase 7",
+        "name": "Hidden Hunters",
     },
     {
-        "name": "The Chase 8",
+        "name": "Random 1",
     },
     {
-        "name": "The Chase 9",
+        "name": "Random 2",
     },
     {
-        "name": "The Chase 10",
+        "name": "Random 3",
     },
     {
-        "name": "The Chase 11",
+        "name": "Random 4",
     },
     {
-        "name": "The Chase 12",
+        "name": "Random 5",
     },
     {
-        "name": "The Chase 13",
+        "name": "Random 6",
     },
     {
-        "name": "The Chase 14",
+        "name": "Random 7",
     },
     {
-        "name": "The Chase 15",
+        "name": "Random 8",
     },
     {
-        "name": "The Chase 16",
+        "name": "Random 9",
     },
     {
-        "name": "The Chase 17",
+        "name": "Random 10",
     },
     {
-        "name": "The Chase 18",
+        "name": "Random 11",
     },
     {
-        "name": "The Chase 19",
+        "name": "Random 12",
     },
     {
-        "name": "The Chase 20",
+        "name": "Random 13",
     }
 ];
 /**
