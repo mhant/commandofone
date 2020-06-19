@@ -290,3 +290,53 @@ function randomEnemies() {
     }
     return enemyTypesPlaces;
 }
+
+function passphrase2Level(passphrase) {
+    let level = 0;;
+    for (var i = 0; i < passphrase.length; i++) {
+        let factor = Math.pow(10, i);
+        let find = wordHash.indexOf(passphrase[i]) - (i === 0 ? 0 : 1);
+        level += find * factor;
+    }
+    return level / Math.floor(Math.PI * 7);
+}
+
+function level2Passphrase(level) {
+    let levelInt = parseInt(level);
+    let passphrase = [];
+    if (levelInt === NaN || levelInt < 1 || levelInt > levels.length) {
+        throw Error("Invalid level, must be int between 0 and " + levels.length);
+    }
+    //ENHANCE
+    levelInt *= Math.floor(Math.PI * 7);
+    //WORDS
+    while (levelInt > 1) {
+        passphrase.push(wordHash[levelInt % 10]);
+        levelInt = (levelInt - levelInt % 10) / 10;
+        levelInt++;
+    }
+    return passphrase;
+}
+
+var wordHash = [
+    "accept",
+    "pop",
+    "origin",
+    "communist",
+    "shrink",
+    "cousin",
+    "divide",
+    "wonder",
+    "meet",
+    "environmental",
+    "grace",
+    "therapist",
+    "reduce",
+    "minor",
+    "fold",
+    "full",
+    "fast",
+    "criminal",
+    "promote",
+    "collect"
+]
