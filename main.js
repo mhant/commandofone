@@ -2,11 +2,23 @@ var gController;
 var introController;
 var menuController;
 
-function intro() {
-    introController = new HowToController(menu);
+function start() {
+    if (hasShownGuide()) {
+        menu();
+    }
+    else {
+        intro();
+    }
 }
 
-function menu(){
+function intro() {
+    if (!introController) {
+        introController = new HowToController(menu);
+    }
+    introController.start();
+}
+
+function menu() {
     menuController = new MenuController();
 }
 
@@ -35,6 +47,11 @@ function startGame(level) {
 
 function finishCallback(state) {
     if (state === LevelEndState.WIN) {
+        //next after completed
+        let lastLevel = menuController.levelClicked + 1;
+        if (lastLevel > 0) {
+            setLastLevelCode(level2Passphrase(lastLevel));
+        }
         alert("WIN");
     }
     else {

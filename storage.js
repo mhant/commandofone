@@ -1,5 +1,20 @@
-// TODO add localStorage "shown guide" function
+// KEYS
+const SHOWN_GUIDE = "shownGuide";
+const LAST_LEVEL = "last_level";
+const TRUE_STRING = 'true';
 
-// TODO add local storage, last completed level function
+function hasShownGuide(){
+    return localStorage.getItem(SHOWN_GUIDE) === TRUE_STRING;
+}
 
-// TODO add algorithm for creating a key for each level complete so can update from additional device
+function setShownGuide(){
+    localStorage.setItem(SHOWN_GUIDE, true);
+}
+
+function getLastLevelCode(){
+    return JSON.parse(localStorage.getItem(LAST_LEVEL));
+}
+
+function setLastLevelCode(code){
+    localStorage.setItem(LAST_LEVEL, JSON.stringify(code));
+}

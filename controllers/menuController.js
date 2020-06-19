@@ -1,7 +1,9 @@
 class MenuController {
     #hint
     #menu
+    #levelClicked
     constructor() {
+        this.levelClicked = 0;
         var grid = document.getElementById("levels-menu");
         grid.innerHTML = '';
         grid.width = this.width = getWidth() - 50;
@@ -11,10 +13,20 @@ class MenuController {
         var t = this;
         this.menu.style.display = "block";
         t.hint.innerHTML = "Pick a level above or tutorial";
+        let lastCompletedLevel = passphrase2Level(getLastLevelCode());
         // For each level add a grid item
         for (var i = 0; i < levels.length; i++) {
             var menuItem = document.createElement("BUTTON");
-            menuItem.className = "menu-item";
+            if (i > lastCompletedLevel){
+                menuItem.diabled = true;
+                menuItem.className = "menu-item-disabled";
+            }
+            else{
+                menuItem.className = "menu-item";
+                menuItem.onclick = function (event) {
+                    t.onClick(event, true);
+                }
+            }
             menuItem.onmouseover = function (event) {
                 t.onMouseOver(event, true);
             }
@@ -22,9 +34,6 @@ class MenuController {
                 t.hint.innerHTML = "Pick a level above or tutorial";
             }
             menuItem.innerHTML = i;
-            menuItem.onclick = function (event) {
-                t.onClick(event, true);
-            }
             grid.appendChild(menuItem);
         }
         // generate hover and onclick for tutorial
@@ -54,7 +63,9 @@ class MenuController {
     onClick(event, isLevel) {
         this.menu.style.display = "none";
         if (isLevel) {
-            startGame(parseInt(event.currentTarget.innerHTML));
+            let levelInt = parseInt(event.currentTarget.innerHTML);
+            this.levelClicked = levelInt;
+            startGame(levelInt);
         }
         else {
             intro();

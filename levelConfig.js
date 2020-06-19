@@ -292,7 +292,10 @@ function randomEnemies() {
 }
 
 function passphrase2Level(passphrase) {
-    let level = 0;;
+    let level = 0;
+    if (!passphrase) {
+        return level;
+    }
     for (var i = 0; i < passphrase.length; i++) {
         let factor = Math.pow(10, i);
         let find = wordHash.indexOf(passphrase[i]) - (i === 0 ? 0 : 1);

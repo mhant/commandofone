@@ -78,15 +78,31 @@ canvas {
     background-color: #006982;
     text-align: center;
     font-size: 40px;
-    width: 100%;
-    border-top-width: 15px;
-    border-right-width: 30px;
-    border-left-width: 30px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
     border-color: #00D286;
+    display: block;
 }
 
 #menu {
     background-color: #00D286;
+    padding: 10px;
+}
+
+.menu-item-disabled {
+    margin: 5px 20px 5px 20px;
+    font-size: 30px;
+    text-align: center;
+    border: 1px solid #A1AF9F;
+    background-color: #F2F1E6;
+    color: #141E13;
 }
 
 /* Menu end */
+
+/* HowTo start */
+#tutorial{
+    object-fit: contain;
+}
+/* HowTo end */

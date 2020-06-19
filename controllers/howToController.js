@@ -4,16 +4,21 @@ class HowToController {
     #imgArr
     #currImage
     constructor(callback) {
+        setShownGuide();
         this.imgDIV = document.getElementById("tutorial");
         this.imgDIV.width = this.width = getWidth() - 50;
         this.imgDIV.height = this.height = getHeight() - 75;
         this.callback = callback;
         this.initHowToImages();
+        this.imgDIV.src = this.imgArr[this.currImage];
+        var t = this;
+        this.imgDIV.addEventListener('click', function (event) { t.clickHandler(event) });
+    }
+
+    start(){
         this.currImage = 0;
         this.imgDIV.src = this.imgArr[this.currImage];
         this.imgDIV.style.display = "block";
-        var t = this;
-        this.imgDIV.addEventListener('click', function (event) { t.clickHandler(event) });
     }
 
     initHowToImages() {
