@@ -52,16 +52,18 @@ function startGame(level) {
 }
 
 function finishCallback(state) {
+    var newLevelUnlocked = "";
     if (state === LevelEndState.WIN) {
         //next after completed
         let lastLevel = menuController.levelClicked + 1;
         if (lastLevel > passphrase2Level(getLastLevelCode())) {
             setLastLevelCode(level2Passphrase(lastLevel));
+            newLevelUnlocked = " New level unlocked.";
         }
-        alert("WIN");
+        togglePopup("Game Over", "You win." + newLevelUnlocked);
     }
     else {
-        alert("LOSE");
+        togglePopup("Game Over", "You lose.");
     }
     menu();
 }
@@ -148,5 +150,24 @@ function codeSubmitted() {
             menu();
         }
     }
+}
 
+function togglePopup(title, message) {
+    var popup = document.getElementById("popup");
+    var popupT = document.getElementById("popup-title");
+    popupT.innerHTML = title;
+    var popupM = document.getElementById("popup-message");
+    var button = document.getElementById("close-popup");
+    popupM.innerHTML = message;
+    popup.classList.toggle("show");
+    popupT.classList.toggle("show");
+    popupM.classList.toggle("show");
+    button.classList.toggle("show");
+}
+
+function closePopup(){
+    // in case popup is open want to close when leave menu
+    if(popup.classList.contains("show")){
+        togglePopup();
+    }
 }

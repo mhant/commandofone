@@ -24,6 +24,7 @@ class MenuController {
     }
 
     onClick(event, isLevel) {
+        closePopup();
         this.menu.style.display = "none";
         if (isLevel) {
             let levelInt = parseInt(event.currentTarget.innerHTML);

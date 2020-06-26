@@ -113,7 +113,7 @@ canvas {
     text-align: center;
 }
 
-#enter-code{
+#enter-code {
     margin: 0 auto;
     width: 40%;
 }
@@ -127,3 +127,54 @@ canvas {
 }
 
 /* HowTo end */
+
+/** Popup start */
+
+/* Some examples taken from 
+https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup
+*/
+
+.popup {
+    visibility: hidden;
+    background-color: #2F4858;
+    color: #fff;
+}
+
+#popup {
+    width: 250px;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    margin: 100px auto;
+    left: 0;
+    right: 0;
+}
+
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/** Popup end */
