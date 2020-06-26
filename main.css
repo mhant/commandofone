@@ -99,10 +99,31 @@ canvas {
     color: #141E13;
 }
 
+#codes {
+    padding: 5px;
+    background-color: #A1AF9F;
+    margin: 10px 80px 5px 80px;
+}
+
+#latest-code {
+    background-color: #F2F1E6;
+    border: 3px solid #2F4858;
+    margin: 0 auto;
+    width: 40%;
+    text-align: center;
+}
+
+#enter-code{
+    margin: 0 auto;
+    width: 40%;
+}
+
 /* Menu end */
 
 /* HowTo start */
-#tutorial{
+
+#tutorial {
     object-fit: contain;
 }
+
 /* HowTo end */

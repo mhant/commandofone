@@ -19,7 +19,13 @@ function intro() {
 }
 
 function menu() {
-    menuController = new MenuController();
+    if (!menuController) {
+        menuController = new MenuController();
+    }
+    else {
+        menuController.refresh();
+    }
+
 }
 
 function startGame(level) {
@@ -131,4 +137,16 @@ function getTurnRoute(point, turnRad, shipType, direction = 0) {
     let x2 = cX + (radius * Math.cos(direction + (2 * turnRad)));
     let y2 = cY + (radius * Math.sin(direction + (2 * turnRad)));
     return [{ "x": x1, "y": y1 }, { "x": x2, "y": y2 }];
+}
+
+function codeSubmitted() {
+    var code = document.getElementById("code-entered").value;
+    if (code) {
+        codeLevel = passphrase2Level(code.split(" "));
+        if (codeLevel > 0) {
+            setLastLevelCode(level2Passphrase(codeLevel));
+            menu();
+        }
+    }
+
 }

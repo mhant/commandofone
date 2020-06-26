@@ -414,6 +414,9 @@ function passphrase2Level(passphrase) {
     for (var i = 0; i < passphrase.length; i++) {
         let factor = Math.pow(10, i);
         let find = wordHash.indexOf(passphrase[i]) - (i === 0 ? 0 : 1);
+        if (find < 0){
+            return 0;
+        }
         level += find * factor;
     }
     return level / Math.floor(Math.PI * 7);
