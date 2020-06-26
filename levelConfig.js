@@ -204,12 +204,356 @@ var levels = [
     },
     {
         "name": "The Wall",
+        "playerPlace": {
+            "x": "50",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2-GATE_HEIGHT/2"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2-100",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y-100"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2+100",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y+100"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2+200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x",
+                "y": "gatePlace.y+GATE_HEIGHT/2-200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x+200",
+                "y": "gatePlace.y+GATE_HEIGHT/2",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "playerPlace.x",
+                        "y": "playerPlace.y"
+                    }
+                ]
+            }
+        ]
+
+
     },
     {
         "name": "X Marks the Spot",
+        "playerPlace": {
+            "x": "50",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2-GATE_HEIGHT/2"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "50",
+                "y": "50",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()-50",
+                        "y": "getHeight()-50"
+                    },
+                    {
+                        "x": "50",
+                        "y": "50"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()-50",
+                "y": "getHeight()-50",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "50"
+                    },
+                    {
+                        "x": "getWidth()-50",
+                        "y": "getHeight()-50"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()-50",
+                "y": "50",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "getHeight()-50"
+                    },
+                    {
+                        "x": "getWidth()-50",
+                        "y": "50"
+                    }
+                ]
+            },
+            {
+                "x": "50",
+                "y": "getHeight()-50",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "getWidth()-50",
+                        "y": "50"
+                    },
+                    {
+                        "x": "50",
+                        "y": "getHeight()-50"
+                    }
+                ]
+            }
+        ]
     },
     {
         "name": "Hidden Hunters",
+        "playerPlace": {
+            "x": "50",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2-GATE_HEIGHT/2"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "0",
+                "y": "0",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()/2-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()+200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "0",
+                        "y": "0"
+                    }
+                ]
+            },
+            {
+                "x": "200",
+                "y": "getHeight()+200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()/2-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()+200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "0",
+                        "y": "0"
+                    },
+                    {
+                        "x": "200",
+                        "y": "getHeight()+200"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()/2-200",
+                "y": "0",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()+200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "0",
+                        "y": "0"
+                    },
+                    {
+                        "x": "200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()/2-200",
+                        "y": "0"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()/2",
+                "y": "getHeight()+200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()+200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "0",
+                        "y": "0"
+                    },
+                    {
+                        "x": "200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()/2-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()+200"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()-200",
+                "y": "0",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()+200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "0",
+                        "y": "0"
+                    },
+                    {
+                        "x": "200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()/2-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()-200",
+                        "y": "0"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()+200",
+                "y": "getHeight()+200",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "0",
+                        "y": "0"
+                    },
+                    {
+                        "x": "200",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()/2-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()/2",
+                        "y": "getHeight()+200"
+                    },
+                    {
+                        "x": "getWidth()-200",
+                        "y": "0"
+                    },
+                    {
+                        "x": "getWidth()+200",
+                        "y": "getHeight()+200"
+                    }
+                ]
+            }
+        ]
     },
     {
         "name": "Random 1",
@@ -414,7 +758,7 @@ function passphrase2Level(passphrase) {
     for (var i = 0; i < passphrase.length; i++) {
         let factor = Math.pow(10, i);
         let find = wordHash.indexOf(passphrase[i]) - (i === 0 ? 0 : 1);
-        if (find < 0){
+        if (find < 0) {
             return 0;
         }
         level += find * factor;
