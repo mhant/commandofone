@@ -49,7 +49,7 @@ function finishCallback(state) {
     if (state === LevelEndState.WIN) {
         //next after completed
         let lastLevel = menuController.levelClicked + 1;
-        if (lastLevel > 0) {
+        if (lastLevel > passphrase2Level(getLastLevelCode())) {
             setLastLevelCode(level2Passphrase(lastLevel));
         }
         alert("WIN");
