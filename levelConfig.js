@@ -757,7 +757,7 @@ function passphrase2Level(passphrase) {
     }
     for (var i = 0; i < passphrase.length; i++) {
         let factor = Math.pow(10, i);
-        let find = wordHash.indexOf(passphrase[i]) - (i === 0 ? 0 : 1);
+        var find = wordHash.indexOf(passphrase[i]);
         if (find < 0) {
             return 0;
         }
@@ -775,10 +775,9 @@ function level2Passphrase(level) {
     //ENHANCE
     levelInt *= Math.floor(Math.PI * 7);
     //WORDS
-    while (levelInt > 1) {
+    while (levelInt > 0) {
         passphrase.push(wordHash[levelInt % 10]);
         levelInt = (levelInt - levelInt % 10) / 10;
-        levelInt++;
     }
     return passphrase;
 }
