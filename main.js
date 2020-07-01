@@ -30,8 +30,9 @@ function menu() {
 
 function startGame(level) {
     // ensure that width is at least 600 for at least one enemy
-    if (getWidth() < 600) {
-        alert("Please enlarge browser to at least 600px width and refresh page.");
+    if (getWidth() < 800 || getHeight() < 400) {
+        togglePopup("Screen Size", "Please enlarge browser to at least 800px width by 400px height.");
+        menu();
         return;
     }
     // var randGame = getRandomeGame();
@@ -46,7 +47,8 @@ function startGame(level) {
         // if not already ended, end game
         if (!gController.gameOver) {
             gController.end();
-            alert("Do not resize during game, please refresh.");
+            togglePopup("Screen Size", "Do not resize during game. Cheaters never win.");
+            menu();
         }
     }
 }
@@ -148,6 +150,9 @@ function codeSubmitted() {
         if (codeLevel > 0) {
             setLastLevelCode(level2Passphrase(codeLevel));
             menu();
+        }
+        else{
+            togglePopup("Invalid Code", "You've entered an invalid level code, please try again.");
         }
     }
 }

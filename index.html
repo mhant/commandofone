@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Used for dynamically setting style elimaents -->
     <link rel="stylesheet" type="text/css" href="main.css">
@@ -25,9 +26,11 @@
 
 <body onload="start()">
     <div id="popup" class="popup">
+        <div id="close-popup" onclick="togglePopup()" class="popup">
+            X
+        </div>
         <div id="popup-title" class="popup">Test</div>
         <div id="popup-message" class="popup">Test Message</div>
-        <button id="close-popup" onclick="togglePopup()" class="popup">X</button>
     </div>
     <div id="gameboard" style="display:none">
         <style data="dyno" type="text/css"></style>
