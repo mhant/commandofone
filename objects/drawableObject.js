@@ -1,12 +1,10 @@
-class CollideState{
-    static MISS = 0;
-    static HIT = 1;
-    static KILL = 2;
-}
+const CollideState = Object.freeze({
+    'MISS': 0,
+    'HIT': 1,
+    'KILL': 2
+});
 
 class DrawableObject {
-    #x
-    #y
     constructor(x, y) {
         this.x = x;
         this.y = y;

@@ -1,29 +1,33 @@
-class LevelEndState {
-    static WIN = 0;
-    static LOSE = 1;
-}
+const LevelEndState = Object.freeze({
+    'WIN': 0,
+    'LOSE': 1
+});
 
 class GameController {
-    // Objects on the gameboard
     //array of enemies
-    #enemies
+    // enemies
+
     //player ship
-    #player
+    // player
+
     //gate object
-    #gate
+    // gate
+
     //array of missiles
-    #missiles
+    // missiles
+
     // Gameboard and other base drawing components
-    #gameBoard
+    // gameBoard
 
     //game interval mechanism
-    #interval
+    // interval
 
     // callback handler for when game finishes
-    #callbackHandler
+    // callbackHandler
 
     // game state
-    #gameOver
+    // gameOver
+
     constructor(playerPlace, enemyTypesPlaces, gatePlace, callbackHandler) {
         // if invalid init values throw error
         if (!("x" in playerPlace) || !("y" in playerPlace) ||
@@ -33,7 +37,7 @@ class GameController {
             throw Error("Invalid game piece setup config");
         }
         document.getElementById("gameboard").style.display = "block";
-        this.callbackHandler = function(state){
+        this.callbackHandler = function (state) {
             callbackHandler(state);
         };
         this.gameOver = false;
@@ -156,7 +160,7 @@ class GameController {
         var slider = document.getElementById("sheild");
         slider.value = range;
         this.player.setShields(range);
-        this.setSliderHint({"value":range});
+        this.setSliderHint({ "value": range });
     }
 
     clickHandler(event) {

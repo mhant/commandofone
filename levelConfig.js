@@ -782,7 +782,7 @@ function level2Passphrase(level) {
     return passphrase;
 }
 
-var wordHash = [
+const wordHash = [
     "accept",
     "pop",
     "origin",
@@ -803,4 +803,4 @@ var wordHash = [
     "criminal",
     "promote",
     "collect"
-]
+];

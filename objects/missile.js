@@ -2,9 +2,9 @@ const MISSILE_DIAM = 4;
 const MISSILE_SPEED = 4;
 
 class Missile extends DrawableObject {
-    #target
-    #direction
-    #owner
+    // #target
+    // #direction
+    // #owner
     constructor(x, y, target, owner) {
         if (!('x' in target) || !('y' in target)) {
             throw new Error('Invalid target');

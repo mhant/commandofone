@@ -5,48 +5,48 @@ const SHIP_SIDE = 13;
 const TURN_SPEED = Math.PI / 100;
 const FEILD_VISION = Math.PI / 8;
 
-class ShipType {
-    static CRUSER = "cruser";
-    static CORVETTE = "corvette";
-    static STEALTH = "stealth";
-}
+const ShipType = Object.freeze({
+    'CRUSER': "cruser",
+    'CORVETTE': "corvette",
+    'STEALTH': "stealth"
+});
 
-class SheildPosition {
-    static BACK = 1;
-    static EQUAL = 2;
-    static FRONT = 3;
-}
+const SheildPosition = Object.freeze({
+    'BACK': 1,
+    'EQUAL': 2,
+    'FRONT': 3
+});
 //engine state defines how much of total speed can be used
-class EngineState {
-    static REST = 0;
-    static TURNING = 1;
-    static WARM = 2;
-    static MAX = 50;
-    static COOLPERIOD = this.MAX - this.WARM;
-}
-
+const EngineState = {
+    'REST': 0,
+    'TURNING': 1,
+    'WARM': 2,
+    'MAX': 50
+};
+EngineState['COOLPERIOD'] = EngineState.MAX - EngineState.WARM
+Object.freeze(EngineState);
 //state of firing missiles
-class MissileState {
-    static READY = 0;
-    static COOLDOWN = 200;
-}
+const MissileState = Object.freeze({
+    'READY': 0,
+    'COOLDOWN': 200
+});
 
 class Ship extends DrawableObject {
-    #type
-    #direction
-    #size
-    #color
-    #destination
-    #origin
-    #speed
-    #shieldPosition
-    #shieldStrength
-    #engineState
-    #enemy // for enemy ships only draw sensor, for our ship only draw sheild
-    #missileCount
-    #missileState // current state of firing component, needs cooldown
-    #route // predermined inifinite looping route
-    #currRoutePoint // current point in route
+    // #type
+    // #direction
+    // #size
+    // #color
+    // #destination
+    // #origin
+    // #speed
+    // #shieldPosition
+    // #shieldStrength
+    // #engineState
+    // #enemy // for enemy ships only draw sensor, for our ship only draw sheild
+    // #missileCount
+    // #missileState // current state of firing component, needs cooldown
+    // #route // predermined inifinite looping route
+    // #currRoutePoint // current point in route
 
     constructor(x, y, type = ShipType.CRUSER, direction = 0, enemy = true, route = null) {
         super(x, y);
@@ -62,7 +62,7 @@ class Ship extends DrawableObject {
                 this.size = 5;
                 this.color = "#008D9B";
                 //non enemy cruser is the speed stealth, so faster
-                this.speed = 3 ;
+                this.speed = 3;
                 this.shieldStrength = 2;
                 this.missileCount = 2;
                 this.missileState = MissileState.READY;

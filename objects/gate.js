@@ -2,7 +2,6 @@ const GATE_WIDTH = 40;
 const GATE_HEIGHT = 100;
 
 class Gate extends DrawableObject {
-
     draw(ctx) {
         ctx.beginPath();
         ctx.globalAlpha = .25;

@@ -1,9 +1,4 @@
 class GameBoardController {
-    #canvas
-    leftAdjust
-    topAdjust
-    width
-    height
     start() {
         this.canvas = document.getElementById("gboard");
         this.setSize();

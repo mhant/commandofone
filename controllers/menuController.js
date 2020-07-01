@@ -1,9 +1,9 @@
 class MenuController {
-    #hint
-    #menu
-    #levelClicked
-    #grid
-    #tutorialButton
+    // hint
+    // menu
+    // levelClicked
+    // grid
+    // tutorialButton
     constructor() {
         this.grid = document.getElementById("levels-menu");
         this.hint = document.getElementById("menu-tip");

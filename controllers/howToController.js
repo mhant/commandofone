@@ -1,8 +1,8 @@
 class HowToController {
-    #imgDIV
-    #callback
-    #imgArr
-    #currImage
+    // imgDIV
+    // callback
+    // imgArr
+    // currImage
     constructor(callback) {
         setShownGuide();
         this.imgDIV = document.getElementById("tutorial");
