@@ -3,6 +3,12 @@ const LevelEndState = Object.freeze({
     'LOSE': 1
 });
 
+const ShakeMode = Object.freeze({
+    'NONE': 0,
+    // needs to be odd so goes back to 0
+    'SHAKE': 15
+});
+
 class GameController {
     //array of enemies
     // enemies
@@ -27,6 +33,9 @@ class GameController {
 
     // game state
     // gameOver
+
+    // shake mode (for shake effect)
+    // shakeMode
 
     constructor(playerPlace, enemyTypesPlaces, gatePlace, callbackHandler) {
         // if invalid init values throw error
@@ -65,6 +74,7 @@ class GameController {
             }
             , 20);
         this.gameBoard.canvas.addEventListener('click', function (event) { t.clickHandler(event) });
+        this.shakeMode = ShakeMode.NONE;
     }
 
     setSliderHint(range) {
@@ -100,6 +110,11 @@ class GameController {
             return;
         }
         this.gameBoard.clear();
+        //==== shake mode ==== 
+        if (this.shakeMode > ShakeMode.NONE) {
+            this.gameBoard.shake();
+            this.shakeMode--;
+        }
         //==== draw && update ==== 
         // enemies
         for (var i = 0; i < this.enemies.length; i++) {
@@ -129,6 +144,10 @@ class GameController {
             //==== check collision ====
             var hit = this.player.collide(this.missiles[i].x, this.missiles[i].y);
             if (hit > CollideState.MISS) {
+                // on hit turn on shake, if not already on
+                if (this.shakeMode === ShakeMode.NONE) {
+                    this.shakeMode = ShakeMode.SHAKE;
+                }
                 this.missiles.splice(i, 1);
                 if (hit === CollideState.KILL) {
                     this.callbackHandler(LevelEndState.LOSE);
