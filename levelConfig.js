@@ -556,6 +556,171 @@ var levels = [
         ]
     },
     {
+        "name": "The Eitan Peretz Maneuver",
+        "playerPlace": {
+            "x": "getWidth()-100",
+            "y": "getHeight()/2"
+        },
+        "gatePlace": {
+            "x": "0",
+            "y": "0"
+        },
+        "enemyTypesPlaces": [
+            {
+                "x": "50",
+                "y": "playerPlace.y + 100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()",
+                        "y": "playerPlace.y + 100"
+                    },
+                    {
+                        "x": "50",
+                        "y": "playerPlace.y + 100"
+                    }
+                ]
+            },
+            {
+                "x": "50",
+                "y": "playerPlace.y - 100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()",
+                        "y": "playerPlace.y - 100"
+                    },
+                    {
+                        "x": "50",
+                        "y": "playerPlace.y - 100"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()",
+                "y": "playerPlace.y + 100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "playerPlace.y + 100"
+                    },
+                    {
+                        "x": "getWidth()",
+                        "y": "playerPlace.y + 100"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()",
+                "y": "playerPlace.y - 100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "playerPlace.y - 100"
+                    },
+                    {
+                        "x": "getWidth()",
+                        "y": "playerPlace.y - 100"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x+200",
+                "y": "50",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "gatePlace.x+200",
+                        "y": "getHeight()"
+                    },
+                    {
+                        "x": "gatePlace.x+200",
+                        "y": "50"
+                    }
+                ]
+            },
+            {
+                "x": "gatePlace.x+200",
+                "y": "getHeight()/2",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "gatePlace.x+200",
+                        "y": "50"
+                    },
+                    {
+                        "x": "gatePlace.x+200",
+                        "y": "getHeight()"
+                    }
+                ]
+            },
+            {
+                "x": "0",
+                "y": "gatePlace.y + GATE_HEIGHT/2",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "getWidth()",
+                        "y": "gatePlace.y + GATE_HEIGHT/2"
+                    },
+                    {
+                        "x": "50",
+                        "y": "gatePlace.y + GATE_HEIGHT/2"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()/2",
+                "y": "gatePlace.y + GATE_HEIGHT/2",
+                "shipType": "corvette",
+                "route": [
+                    {
+                        "x": "50",
+                        "y": "gatePlace.y + GATE_HEIGHT/2"
+                    },
+                    {
+                        "x": "getWidth()",
+                        "y": "gatePlace.y + GATE_HEIGHT/2"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()/2",
+                "y": "playerPlace.y + 100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()",
+                        "y": "playerPlace.y + 100"
+                    },
+                    {
+                        "x": "50",
+                        "y": "playerPlace.y + 100"
+                    }
+                ]
+            },
+            {
+                "x": "getWidth()/2",
+                "y": "playerPlace.y - 100",
+                "shipType": "cruser",
+                "route": [
+                    {
+                        "x": "getWidth()",
+                        "y": "playerPlace.y - 100"
+                    },
+                    {
+                        "x": "50",
+                        "y": "playerPlace.y - 100"
+                    }
+                ]
+            }
+        ]
+
+
+    },
+    {
         "name": "Random 1",
     },
     {
